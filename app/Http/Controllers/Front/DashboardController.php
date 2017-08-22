@@ -7,6 +7,7 @@ use App\Models\Backup;
 use App\Models\Command;
 use App\Models\Log;
 use Carbon\Carbon;
+use Collective\Remote\Connection;
 
 class DashboardController extends BaseController
 {

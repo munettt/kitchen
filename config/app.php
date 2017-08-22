@@ -184,6 +184,7 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Laratrust\LaratrustServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Collective\Remote\RemoteServiceProvider::class,
 
 
     ],

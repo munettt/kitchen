@@ -13,6 +13,7 @@
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.2.0",
+        "laravelcollective/remote": "^5.3",
         "santigarcor/laratrust": "4.0.*"
     },
     "require-dev": {
