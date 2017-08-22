@@ -14,6 +14,7 @@
                 <th>Options</th>
             </tr>
         </thead>
+        <tbody>
         @foreach ( $backups as $backup )
             <tr>
                 <td><a href="{{route('backup.show',$backup->id)}}">{{$backup->application->domain}}</a></td>
@@ -23,10 +24,13 @@
                     @php
                     if ( is_dir($backup->backup_path)) {
 
-                        $files = scandir($backup->backup_path, SCANDIR_SORT_DESCENDING);
-                        $newest_file = $files[0];
+                        $files = array_where(scandir($backup->backup_path, SCANDIR_SORT_ASCENDING), function($value) use ($backup) {
+                            return is_file($backup->backup_path.'/'.$value);
+                        });
 
-                        if ( !empty($newest_file) && $newest_file != '..' && $newest_file != '.' ) {
+                        $newest_file = array_first($files);
+
+                        if ( !empty($newest_file) ) {
                             echo \Carbon\Carbon::createFromTimestamp(filectime($backup->backup_path.'/'.$newest_file))->diffForHumans();
                         } else {
                             echo '<span class="text-muted">Never</span>';
@@ -47,5 +51,6 @@
                 </td>
             </tr>
         @endforeach
+        </tbody>
     </table>
 @endsection

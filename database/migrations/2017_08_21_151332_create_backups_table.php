@@ -16,6 +16,7 @@ class CreateBackupsTable extends Migration
         Schema::create('backups', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('app_id')->unsigned()->index();
+            $table->string('backup_url');
             $table->string('backup_path');
             $table->string('frequency',50);
             $table->timestamps();

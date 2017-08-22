@@ -13,6 +13,7 @@
                 <th>Options</th>
             </tr>
         </thead>
+        <tbody>
         @foreach ( $commands as $command )
             <tr>
                 <td>{{$command->title}}</td>
@@ -28,6 +29,7 @@
                 </td>
             </tr>
         @endforeach
+        </tbody>
     </table>
 
     {!! $commands->links() !!}

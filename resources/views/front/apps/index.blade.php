@@ -12,6 +12,7 @@
                 <th>Options</th>
             </tr>
         </thead>
+        <tbody>
         @foreach ( $apps as $app )
             <tr>
                 <td>{{$app->domain}}</td>
@@ -26,5 +27,6 @@
                 </td>
             </tr>
         @endforeach
+        </tbody>
     </table>
 @endsection

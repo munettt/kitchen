@@ -13,6 +13,13 @@
             </div>
         </div>
         <div class="form-group row">
+            <label for="backup_url" class="col-sm-2 col-form-label text-right">URL</label>
+            <div class="col-sm-10">
+                {!! Form::text('backup_url',null,['id'=>'backup_url','class'=>'form-control','required']) !!}
+                <small class="form-text text-muted">Backup url. http://application/dbbackup/folder</small>
+            </div>
+        </div>
+        <div class="form-group row">
             <label for="backup_path" class="col-sm-2 col-form-label text-right">Path</label>
             <div class="col-sm-10">
                 {!! Form::text('backup_path',null,['id'=>'backup_path','class'=>'form-control','required']) !!}
