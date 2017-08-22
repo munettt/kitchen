@@ -67,7 +67,20 @@ class BackupController extends BaseController
      */
     public function show($id)
     {
-        //
+        $backup = Backup::findOrFail($id);
+
+        $getFiles = scandir($backup->backup_path, SCANDIR_SORT_DESCENDING);
+        $files = [];
+
+        foreach ( $getFiles as $_file ) {
+            if ( is_file($backup->backup_path.'/'.$_file) ) {
+                $files[] = $_file;
+            }
+        }
+
+        dd($files);
+
+        return view('front.backup.view', compact('backup',$files));
     }
 
     /**

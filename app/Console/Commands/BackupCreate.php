@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\App;
-use App\Models\Log;
+use App\Models\History;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
 
@@ -46,13 +46,18 @@ class BackupCreate extends Command
 
         if ( $application && !empty($application->db_database) && !empty($application->db_username) ) {
 
-            $cmd ='mysqldump -u'.$application->db_username.' -p'.$application->db_password.' '.$application->db_database.' --routines  > '.$application->backup->backup_path.'\backup_'.date('d-m-Y').'.sql';
-            //$process = new Process('mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_database.' | gzip -c | cat > '.$application->backup_path.'/backup_$(date +%Y-%m-%d).sql.gz');
-            $process = new Process($cmd);
+            //$cmd ='mysqldump -u'.$application->db_username.' -p'.$application->db_password.' '.$application->db_database.' --routines  > '.$application->backup->backup_path.'\backup_'.date('d-m-Y').'.sql';
+            //$process = new Process($cmd);
+
+            $date = date('d-m-Y Hi');
+
+            $process = new Process('mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_database.' | gzip -c | cat > '.$application->backup_path.'/backup_'.$date.'.sql.gz');
             $process->run();
 
-            Log::create(['user_id' => auth()->id(), 'log_type' => 'backup']);
+            History::create(['log_type' => 'backup', 'response' => 'New backup created: backup_'.$date.'.sql.gz']);
 
+        } else {
+            throw new \Exception('Invalid application (id:'.$appId.') or database connection');
         }
     }
 }

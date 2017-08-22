@@ -16,7 +16,7 @@ class CreateHistoriesTable extends Migration
         Schema::create('histories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('log_type');
-            $table->integer('command_id')->unsigned()->index();
+            $table->integer('command_id')->unsigned()->index()->nullable();
             $table->text('response')->nullable();
             $table->timestamp('created_at');
 
