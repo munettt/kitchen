@@ -132,11 +132,12 @@ class CommandController extends BaseController
         if (empty($command->application->server_ip)) {
             $process = new Process($task);
         } else {
+            $delimiter = 'EOF-APP';
             $process = new Process(
-                "ssh ".$command->application->server_ip." 'bash -se' << \\EOF-SSH".PHP_EOL
+                "ssh -o StrictHostKeyChecking=no ".$command->application->server_ip." 'bash -se' << \\$delimiter".PHP_EOL
                 .'set -e'.PHP_EOL
-                .$task.PHP_EOL
-                ."EOF-SSH"
+                .task.PHP_EOL
+                .$delimiter
             );
         }
 
@@ -150,18 +151,20 @@ class CommandController extends BaseController
     public function test($id)
     {
         $command = Command::findOrFail($id);
-        
+
         $commands = explode(PHP_EOL,$command->recipe);
         $task = implode(' && ', array_map('trim', $commands));
 
         if (empty($command->application->server_ip)) {
             $process = new Process($task);
         } else {
+
+            $delimiter = 'EOF-APP';
             $process = new Process(
-                "ssh ".$command->application->server_ip." 'bash -se' << \\EOF-SSH".PHP_EOL
+                "ssh -o StrictHostKeyChecking=no ".$command->application->server_ip." 'bash -se' << \\$delimiter".PHP_EOL
                 .'set -e'.PHP_EOL
-                .$task.PHP_EOL
-                ."EOF-SSH"
+                .task.PHP_EOL
+                .$delimiter
             );
         }
 
