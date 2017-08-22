@@ -17,10 +17,9 @@ class CreateAppsTable extends Migration
             $table->increments('id');
             $table->string('domain');
             $table->string('path')->nullable();
+            $table->string('server_ip')->nullable();
             $table->string('ssh_name')->nullable();
             $table->text('ssh_pubkey')->nullable();
-            $table->text('repository')->nullable();
-            $table->string('branch')->nullable();
             $table->string('db_username')->nullable();
             $table->string('db_password')->nullable();
             $table->string('db_database')->nullable();
