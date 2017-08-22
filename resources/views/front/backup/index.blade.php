@@ -24,7 +24,7 @@
                     @php
                     if ( is_dir($backup->backup_path)) {
 
-                        $files = array_where(scandir($backup->backup_path, SCANDIR_SORT_ASCENDING), function($value) use ($backup) {
+                        $files = array_where(scandir($backup->backup_path, SCANDIR_SORT_DESCENDING), function($value) use ($backup) {
                             return is_file($backup->backup_path.'/'.$value);
                         });
 
