@@ -20,8 +20,8 @@
                 <td>
                 @if ( isset($command->application))
                     {{ $command->application->domain OR '' }}
-                    @if ( !empty($command->application->server) )
-                        <span class="text-muted">({{$command->application->server}}</span>
+                    @if ( !empty($command->application->server_ip) )
+                        <span class="text-muted">({{$command->application->server_ip}}</span>
                     @endif
                 @endif
                 </td>
