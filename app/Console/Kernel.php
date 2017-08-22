@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        if(DB::connection()->getDatabaseName()) {
+        if(config('kitchen.scheduler')) {
             $backups = Backup::all();
 
             foreach ($backups as $backup) {
