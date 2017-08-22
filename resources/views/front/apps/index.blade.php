@@ -9,7 +9,7 @@
             <tr>
                 <th>Domain</th>
                 <th>Path</th>
-                <th>Delete</th>
+                <th>Options</th>
             </tr>
         </thead>
         @foreach ( $apps as $app )
@@ -17,6 +17,7 @@
                 <td>{{$app->domain}}</td>
                 <td>{{$app->path}}</td>
                 <td>
+                    <a href="{{route('apps.edit',$app->id)}}"><i class="icon ion-edit text-warning mr-2"></i></a>
                     <a href="#" data-toggle="delete" class="text-danger"><i class="icon ion-close-circled"></i></a>
                     <form class="delete" action="{{route('apps.destroy',$app->id)}}" method="POST" style="display: none;">
                         <input type="hidden" name="_method" value="DELETE">

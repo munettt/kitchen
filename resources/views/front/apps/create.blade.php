@@ -5,6 +5,8 @@
 @endsection
 
 @section('content')
+    <a href="{{route('apps.index')}}" class="btn btn-light mb-3"><i class="icon ion-chevron-left"></i> Back</a>
+
     {!! Form::open(['route' => 'apps.store', 'role' => 'form', 'method' => 'post', 'files' => false]) !!}
     @include('front.apps.partials.form')
     {!! Form::close() !!}

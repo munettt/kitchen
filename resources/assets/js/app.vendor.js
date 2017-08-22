@@ -13,8 +13,8 @@ $(function () {
     $('.select').each(function(i, e){
         if (!($(e).data('convert') == 'no')) {
             $(e).hide().removeClass('select');
-            var current = $(e).find('.option.selected').html() || 'Select';
-            var val   =   $(e).find('.option.selected').data('value');
+            var current = $(e).find('option:selected').text() || 'Select';
+            var val   =   $(e).find('option:selected').attr('value');
             var name  =   $(e).attr('name') || '';
 
             $(e).parent().append('<div class="btn-group" id="select-group-' + i + '" />');

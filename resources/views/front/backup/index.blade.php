@@ -11,7 +11,7 @@
                 <th>Path</th>
                 <th>Frequency</th>
                 <th>Last Backup</th>
-                <th>Delete</th>
+                <th>Options</th>
             </tr>
         </thead>
         @foreach ( $backups as $backup )
@@ -22,16 +22,23 @@
                 <td>
                     @php
                     if ( is_dir($backup->backup_path)) {
+
                         $files = scandir($backup->backup_path, SCANDIR_SORT_DESCENDING);
                         $newest_file = $files[0];
 
-                        echo \Carbon\Carbon::createFromTimestamp(filectime($backup->backup_path.'/'.$newest_file))->diffForHumans();
+                        if ( !empty($newest_file) ) {
+                            echo \Carbon\Carbon::createFromTimestamp(filectime($backup->backup_path.'/'.$newest_file))->diffForHumans();
+                        } else {
+                            echo '-';
+                        }
+
                     } else {
                         echo 'Invalid dir: backup_path';
                     }
                     @endphp
                 </td>
                 <td>
+                    <a href="{{route('backup.edit',$backup->id)}}"><i class="icon ion-edit text-warning mr-2"></i></a>
                     <a href="#" data-toggle="delete" class="text-danger"><i class="icon ion-close-circled"></i></a>
                     <form class="delete" action="{{route('apps.destroy',$backup->id)}}" method="POST" style="display: none;">
                         <input type="hidden" name="_method" value="DELETE">
