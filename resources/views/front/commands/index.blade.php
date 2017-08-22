@@ -17,7 +17,7 @@
         @foreach ( $commands as $command )
             <tr>
                 <td>{{$command->title}}</td>
-                <td>{{ isset($command->application) ? $command->application->domain : null}}</td>
+                <td>{{ isset($command->application) ? $command->application->domain : null}} {{ isset($command->application) ? '('.$command->application->server_ip.')' : null }}</td>
                 <td><a href="#" class="btn btn-secondary btn-sm btn-cmd" data-id="{{$command->id}}"><i class="mr-1 icon ion-flash"></i> Run Command</a></td>
                 <td>
                     <a href="{{route('commands.edit',$command->id)}}"><i class="icon ion-edit text-warning mr-2"></i></a>
