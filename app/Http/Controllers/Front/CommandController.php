@@ -6,6 +6,8 @@ use App\Models\Log;
 use App\Models\App;
 use App\Models\Command;
 use Illuminate\Http\Request;
+use phpseclib\Crypt\RSA;
+use phpseclib\Net\SSH2;
 use Symfony\Component\Process\Process;
 
 class CommandController extends BaseController
@@ -155,8 +157,19 @@ class CommandController extends BaseController
         $commands = explode(PHP_EOL,$command->recipe);
         $task = implode(' && ', array_map('trim', $commands));
 
+
         $key = new RSA();
         $key->loadKey($command->application->ssh_key);
+
+        $ssh = new SSH2($command->application->ssh_ip);
+        if (!$ssh->login('username', $key)) {
+            exit('Login Failed');
+        }
+
+        echo $ssh->exec('pwd');
+        echo $ssh->exec('ls -la');
+
+        exit;
 
         if (empty($command->application->ssh_ip)) {
             $process = new Process($task);
