@@ -49,7 +49,7 @@ class DashboardController extends BaseController
         }
 
         //Logs
-        $logs = Log::with('user','command.application')->orderBy('created_at','desc')->limit(10)->get();
+        $logs = Log::with('user','command.application')->orderBy('created_at','desc')->limit(5)->get();
 
         return view('front.dashboard.index', compact('totalApps','totalCommands','latest','backups','logs'));
     }

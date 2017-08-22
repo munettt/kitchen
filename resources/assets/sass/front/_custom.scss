@@ -27,6 +27,10 @@ h1, h2, h3, h4, h5, h6 {
       background: #fff;
     }
   }
+
+  @include media-breakpoint-down(sm) {
+    margin-bottom:1rem;
+  }
 }
 
 
@@ -37,3 +41,11 @@ h1, h2, h3, h4, h5, h6 {
 /* STATUS INDICATOR */
 .status-indicator.active { background-color:#138014; border-color:#666 }
 .status-indicator { display:inline-block; width:12px; height:12px; border-radius:25px; background:#eee; border:1px solid #ccc; margin-right:5px }
+
+
+/* CARD LIST */
+.card-list .row:not(:last-of-type) {
+  border-bottom:1px solid #eee;
+  margin-bottom:0.75rem;
+  padding-bottom:.5rem;
+}

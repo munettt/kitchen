@@ -1,61 +1,129 @@
 // LAYOUT
 body {
-  background:#fff;
+  background: #fff;
 }
 
 .sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  padding-top:25px;
-  z-index: 1000;
-  overflow-x: hidden;
-  overflow-y: auto;
+
+  @include media-breakpoint-down(sm) {
+    position: inherit;
+  }
+
+  @include media-breakpoint-up(sm) {
+
+    padding-top: 25px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    z-index: 1000;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
   background: #614385;
   background: -webkit-linear-gradient(to right, #614385, #516395);
   background: linear-gradient(to right, #614385, #516395);
 
-  .site-brand { text-align:center; margin-bottom:2rem;
+  .site-brand {
+    text-align: center;
+    margin-bottom: 2rem;
 
-    img { height:60px; }
+    img {
+      height: 60px;
+    }
+
+    @include media-breakpoint-down(sm) {
+      display:none;
+    }
+  }
+
+  .sidebar-nav {
+    @include media-breakpoint-down(sm) {
+      flex-direction: row;
+    }
+
+    @include media-breakpoint-up(sm) {
+      flex-direction: column;
+    }
   }
 
   .nav-link {
 
-    font-size:1rem; color:#fff; display:block; text-align:center; opacity:0.6; transition:opacity 150ms ease-in;
-    position:relative;
+    font-size: 1rem;
+    color: #fff;
+    display: block;
+    text-align: center;
+    opacity: 0.6;
+    transition: opacity 150ms ease-in;
+    position: relative;
 
+    &:hover {
+      opacity: 1;
+    }
 
-      &:hover { opacity:1; }
-      .icon { margin-bottom:.5rem; display:block; text-align:center; font-size:1.5rem }
-      &.active { opacity:1; border-radius:0; background: #563a79;
+    @include media-breakpoint-down(sm) {
+      font-size:0.875rem;
+    }
 
+    @include media-breakpoint-up(sm) {
+      .icon {
+        margin-bottom: .5rem;
+        display: block;
+        text-align: center;
+        font-size: 1.5rem
+      }
+    }
+
+    &.active {
+      opacity: 1;
+      border-radius: 0;
+      background: #563a79;
+
+      @include media-breakpoint-up(sm) {
         &::after {
           width: 0;
           height: 0;
-          border:none;
+          border: none;
           border-style: solid;
           border-width: 15px 15px 15px 0;
           border-color: transparent #ffffff transparent transparent;
           content: " ";
-          position:absolute;
-          top:50%;
-          margin-top:-15px;
-          right:-5px;
+          position: absolute;
+          top: 50%;
+          margin-top: -15px;
+          right: -5px;
         }
-
       }
+    }
   }
 }
 
 header {
-  padding:1.5rem 2rem;
+  padding: 1.5rem 2rem;
 
-  .dropdown-menu { min-width:275px; border-radius:0; box-shadow:3px 3px 0px 0px #efefef ; }
+  .dropdown-menu {
+    min-width: 275px;
+    border-radius: 0;
+    box-shadow: 3px 3px 0px 0px #efefef;
+  }
+
+  .dropdown-user
+  {
+    .avatar img {
+      height:32px;
+    }
+
+    .dropdown-toggle {
+      font-size: .875rem;
+    }
+  }
 }
 
-.content-wrapper { padding:1rem 2rem }
+.content-wrapper {
+  padding: 1rem 2rem
+}
 
 // PUBLIC PAGE
 body.public {

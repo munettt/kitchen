@@ -53,10 +53,13 @@
                 <div class="card-header">
                     Command History
                 </div>
-                <div class="card-body">
+                <div class="card-body card-list">
                     @foreach ( $logs as $log )
                         <div class="row">
-                            <div class="col-auto mr-auto">{{$log->command->application->domain}} - {{$log->command->title}}</div>
+                            <div class="col-auto mr-auto">
+                                {{$log->command->application->domain}} - {{$log->command->title}}<br>
+                                <span class="text-small text-muted">{{$log->user->name}}</span>
+                            </div>
                             <div class="col-auto text-right text-muted">{{$log->created_at->diffForHumans()}}</div>
                         </div>
                     @endforeach

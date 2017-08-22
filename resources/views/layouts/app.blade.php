@@ -16,24 +16,24 @@
 <body>
 <div class="container-fluid">
     <div class="row no-gutters">
-        <div class="sidebar col-12 col-lg-1">
+        <div class="sidebar col-12 col-md-2 col-lg-1">
             <div class="site-brand"><a href="{{url("/")}}"><img src="{{asset('images/fork.png')}}" alt="logo"></a></div>
-            <ul class="nav nav-pills flex-column sidebar-nav">
+            <ul class="nav nav-pills sidebar-nav">
                 <li class="nav-item"><a class="nav-link {{$nav=='dashboard'?'active':''}}" href="{{url('/')}}"><em class="icon ion-speedometer"></em> Dashboard <span class="sr-only">(current)</span></a></li>
                 <li class="nav-item"><a class="nav-link  {{$nav=='apps'?'active':''}}" href="{{url('/apps')}}"><i class="icon ion-android-cloud-outline"></i> Applications</a></li>
                 <li class="nav-item"><a class="nav-link  {{$nav=='commands'?'active':''}}" href="{{url('/commands')}}"><em class="icon ion-clipboard"></em> Commands</a></li>
                 <li class="nav-item"><a class="nav-link  {{$nav=='backup'?'active':''}}" href="{{url('/backup')}}"><em class="icon ion-lock-combination"></em> Backup</a></li>
             </ul>
         </div>
-        <div class="col-12 col-lg-11 ml-auto">
+        <div class="col-12 col-lg-11 col-md-10 ml-auto">
             <header class="row justify-center">
                 <div class="col-md-6 col-lg-8">
                     <h6 class="badge badge-warning">{{config('app.name')}}</h6>
                     @yield('page-title')
                 </div>
-                <div class="col-md-6 col-lg-4 text-right">
-                    <div class="dropdown">
-                        <div class="d-inline-block">
+                <div class="col-md-6 col-lg-4 text-md-right pt-3 pt-md-0">
+                    <div class="dropdown dropdown-user">
+                        <div class="d-inline-block avatar">
                             <img src="{{auth()->user()->social->avatar}}" alt="" class="rounded-circle">
                         </div>
                         <a href="#" class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
