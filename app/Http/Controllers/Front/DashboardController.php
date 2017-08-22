@@ -29,7 +29,7 @@ class DashboardController extends BaseController
         $totalCommands = Command::count();
 
         $latest = [];
-        $backups = Backup::with('application')->get();
+        $backups = Backup::with('application')->limit(10)->get();
 
         foreach ( $backups as $backup )
         {
@@ -48,7 +48,7 @@ class DashboardController extends BaseController
         }
 
         //Logs
-        $logs = Log::with('user','command.application')->orderBy('created_at','desc')->get();
+        $logs = Log::with('user','command.application')->orderBy('created_at','desc')->limit(10)->get();
 
         return view('front.dashboard.index', compact('totalApps','totalCommands','latest','backups','logs'));
     }
