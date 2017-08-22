@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Models\App;
 use App\Models\Command;
 use Illuminate\Http\Request;
+use Symfony\Component\Process\Process;
 
 class CommandController extends BaseController
 {
@@ -112,5 +113,34 @@ class CommandController extends BaseController
         flash('Command deleted.');
 
         return redirect()->route('commands.index');
+    }
+
+    public function recipe($id)
+    {
+        $command = Command::findOrFail($id);
+
+        return response()->json(['data' => $command->recipe]);
+    }
+
+    public function exec(Request $request)
+    {
+        $data = $request->get('command');
+
+        $getCmds = explode(PHP_EOL,$data);
+        $commands = [];
+        $responses = '';
+
+        foreach ( $getCmds as $cmd )
+        {
+            $commands[] = $cmd;
+        }
+
+        foreach ( $commands as $command) {
+            $process = new Process($command);
+            $process->run();
+            $responses .= $process->getOutput().PHP_EOL;
+        }
+
+        return response()->json(['data' => $responses]);
     }
 }
