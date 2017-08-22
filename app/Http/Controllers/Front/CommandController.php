@@ -146,4 +146,26 @@ class CommandController extends BaseController
 
         return response()->json(['data' => $responses]);
     }
+
+    public function test($id)
+    {
+        $command = Command::findOrFail($id);
+        $commands = explode(PHP_EOL,$command->recipe);
+        $task = implode(' && ', array_map('trim', $commands));
+
+        if (empty($command->application->server_ip)) {
+            $process = new Process($task);
+        } else {
+            $process = new Process(
+                "ssh ".$command->application->server_ip." 'bash -se' << ".PHP_EOL
+                .'set -e'.PHP_EOL
+                .$task.PHP_EOL
+            );
+        }
+
+        $process->run();
+
+        print_r($process->getOutput());
+        exit;
+    }
 }
