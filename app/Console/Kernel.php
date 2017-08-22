@@ -4,8 +4,6 @@ namespace App\Console;
 
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Console\Scheduling\Schedule;
-use App\Console\Commands\BackupCreate;
-use Illuminate\Support\Facades\DB;
 use App\Models\Backup;
 
 class Kernel extends ConsoleKernel
@@ -16,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        BackupCreate::class
+        \App\Console\Commands\BackupCreate::class
     ];
 
     /**
