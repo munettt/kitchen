@@ -23,7 +23,7 @@ class CreateAppsTable extends Migration
             $table->string('branch')->nullable();
             $table->string('db_username')->nullable();
             $table->string('db_password')->nullable();
-            $table->string('db_name')->nullable();
+            $table->string('db_database')->nullable();
             $table->timestamps();
         });
     }
