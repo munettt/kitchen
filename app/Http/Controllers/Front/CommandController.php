@@ -150,6 +150,7 @@ class CommandController extends BaseController
     public function test($id)
     {
         $command = Command::findOrFail($id);
+        
         $commands = explode(PHP_EOL,$command->recipe);
         $task = implode(' && ', array_map('trim', $commands));
 
@@ -157,15 +158,18 @@ class CommandController extends BaseController
             $process = new Process($task);
         } else {
             $process = new Process(
-                "ssh ".$command->application->server_ip." 'bash -se' << ".PHP_EOL
+                "ssh ".$command->application->server_ip." 'bash -se' << \\EOF-SSH".PHP_EOL
                 .'set -e'.PHP_EOL
                 .$task.PHP_EOL
+                ."EOF-SSH"
             );
         }
 
         $process->run();
 
-        print_r($process->getOutput());
+        $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
+
+        print_r($responses);
         exit;
     }
 }
