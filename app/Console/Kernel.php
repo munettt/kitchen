@@ -2,10 +2,11 @@
 
 namespace App\Console;
 
-use App\Console\Commands\BackupCreate;
-use App\Models\Backup;
-use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\BackupCreate;
+use Illuminate\Support\Facades\DB;
+use App\Models\Backup;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,15 +27,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $backups = Backup::all();
+        if(DB::connection()->getDatabaseName()) {
+            $backups = Backup::all();
 
-        foreach ( $backups as $backup ) {
-            if ( $backup->frequency == 'daily ') {
-                $schedule->command('backup:create --'.$backup->id)->daily();
-            } elseif ( $backup->frequency == '2x' ) {
-                $schedule->command('backup:create --'.$backup->id)->twiceDaily(0,12);
-            } elseif ( $backup->frequency == '1x' ) {
-                $schedule->command('backup:create --'.$backup->id)->hourly();
+            foreach ($backups as $backup) {
+                if ($backup->frequency == 'daily ') {
+                    $schedule->command('backup:create --' . $backup->id)->daily();
+                } elseif ($backup->frequency == '2x') {
+                    $schedule->command('backup:create --' . $backup->id)->twiceDaily(0, 12);
+                } elseif ($backup->frequency == '1x') {
+                    $schedule->command('backup:create --' . $backup->id)->hourly();
+                }
             }
         }
     }
