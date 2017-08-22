@@ -127,15 +127,16 @@ class CommandController extends BaseController
         ]);
 
         $commands = explode(PHP_EOL,$command->recipe);
-        $command = implode(' && ', $commands);
+        $task = implode(' && ', array_map('trim', $commands));
 
         if (empty($command->application->server_ip)) {
-            $process = new Process($command);
+            $process = new Process($task);
         } else {
             $process = new Process(
-                "ssh $command->application->server_ip 'bash -se' << ".PHP_EOL
+                "ssh ".$command->application->server_ip." 'bash -se' << \\EOF-SSH".PHP_EOL
                 .'set -e'.PHP_EOL
-                .$command.PHP_EOL
+                .$task.PHP_EOL
+                ."EOF-SSH"
             );
         }
 
@@ -144,27 +145,5 @@ class CommandController extends BaseController
         $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
 
         return response()->json(['data' => $responses]);
-    }
-
-    public function test($id)
-    {
-        $command = Command::findOrFail($id);
-        $commands = explode(PHP_EOL,$command->recipe);
-        $command = implode(' && ', $commands);
-
-        if (empty($command->application->server_ip)) {
-            $process = new Process($command);
-        } else {
-            $process = new Process(
-                "ssh $command->application->server_ip 'bash -se' << ".PHP_EOL
-                .'set -e'.PHP_EOL
-                .$command.PHP_EOL
-            );
-        }
-
-        $process->run();
-
-        print_r($process->getOutput());
-        exit;
     }
 }
