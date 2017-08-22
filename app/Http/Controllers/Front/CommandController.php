@@ -126,7 +126,24 @@ class CommandController extends BaseController
             'command_id' => $command->id
         ]);
 
-        return response()->json(['data' => $command->recipe]);
+        $commands = explode(PHP_EOL,$command->recipe);
+        $command = implode(' && ', $commands);
+
+        if (empty($command->application->server_ip)) {
+            $process = new Process($command);
+        } else {
+            $process = new Process(
+                "ssh $command->application->server_ip 'bash -se' << ".PHP_EOL
+                .'set -e'.PHP_EOL
+                .$command.PHP_EOL
+            );
+        }
+
+        $process->run();
+
+        $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
+
+        return response()->json(['data' => $responses]);
     }
 
     public function exec(Request $request)
@@ -135,6 +152,8 @@ class CommandController extends BaseController
 
         $commands = explode(PHP_EOL,$data);
         $command = implode(' && ', $commands);
+
+
 
         /*$commands = [];
         $responses = '';
@@ -145,9 +164,9 @@ class CommandController extends BaseController
         }
 
         foreach ( $commands as $command) {*/
-            $process = new Process($command);
+            /*$process = new Process($command);
             $process->run();
-            $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput()) ;
+            $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput()) ;*/
         //}
 
         return response()->json(['data' => $responses,'command' => $command]);

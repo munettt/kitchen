@@ -78,14 +78,13 @@
 
                        $("#modalCommand #command-box").append(response.data.data.replace(/\n/g,"<br>"));
 
-                       axios.post('/commands/exec', {
+                       /*axios.post('/commands/exec', {
                            command: response.data.data
                        }).then(function (execResponse) {
                            $("#modalCommand #command-box").append(execResponse.data.data.replace(/\n/g,"<br>"));
                        }).catch(function (postError) {
                            console.log(postError);
-                       });
-
+                       });*/
                    })
                    .catch(function (error) {
                        console.log(error);

@@ -30,11 +30,11 @@ class Kernel extends ConsoleKernel
 
             foreach ($backups as $backup) {
                 if ($backup->frequency == 'daily ') {
-                    $schedule->command('backup:create --' . $backup->id)->daily();
+                    $schedule->command('backup:create ' . $backup->id)->daily();
                 } elseif ($backup->frequency == '2x') {
-                    $schedule->command('backup:create --' . $backup->id)->twiceDaily(0, 12);
+                    $schedule->command('backup:create ' . $backup->id)->twiceDaily(0, 12);
                 } elseif ($backup->frequency == '1x') {
-                    $schedule->command('backup:create --' . $backup->id)->hourly();
+                    $schedule->command('backup:create ' . $backup->id)->hourly();
                 }
             }
         }
