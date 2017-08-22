@@ -146,29 +146,32 @@ class CommandController extends BaseController
         return response()->json(['data' => $responses]);
     }
 
-    public function exec(Request $request)
+    public function test($id)
     {
-        $data = $request->get('command');
+        $command = Command::findOrFail($id);
 
-        $commands = explode(PHP_EOL,$data);
+        Log::create([
+            'log_type'   => 'command',
+            'user_id'    => auth()->id(),
+            'command_id' => $command->id
+        ]);
+
+        $commands = explode(PHP_EOL,$command->recipe);
         $command = implode(' && ', $commands);
 
-
-
-        /*$commands = [];
-        $responses = '';
-
-        foreach ( $getCmds as $cmd )
-        {
-            $commands[] = $cmd;
+        if (empty($command->application->server_ip)) {
+            $process = new Process($command);
+        } else {
+            $process = new Process(
+                "ssh $command->application->server_ip 'bash -se' << ".PHP_EOL
+                .'set -e'.PHP_EOL
+                .$command.PHP_EOL
+            );
         }
 
-        foreach ( $commands as $command) {*/
-            /*$process = new Process($command);
-            $process->run();
-            $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput()) ;*/
-        //}
+        $process->run();
 
-        return response()->json(['data' => $responses,'command' => $command]);
+        print_r($process->getOutput());
+        exit;
     }
 }

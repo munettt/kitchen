@@ -37,5 +37,5 @@ Route::resource('backup', 'Front\BackupController');
 
 //extra
 Route::get('backup/{id}/create-dir','Front\BackupController@createDir')->name('backup.create-dir');
-Route::post('commands/exec','Front\CommandController@exec')->name('commands.exec');
+Route::get('commands/{id}/test','Front\CommandController@test')->name('commands.exec');
 Route::get('commands/{command}/recipe','Front\CommandController@recipe')->name('commands.recipe');
