@@ -149,13 +149,6 @@ class CommandController extends BaseController
     public function test($id)
     {
         $command = Command::findOrFail($id);
-
-        Log::create([
-            'log_type'   => 'command',
-            'user_id'    => auth()->id(),
-            'command_id' => $command->id
-        ]);
-
         $commands = explode(PHP_EOL,$command->recipe);
         $command = implode(' && ', $commands);
 
