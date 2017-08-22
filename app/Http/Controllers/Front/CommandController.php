@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Log;
 use App\Models\App;
 use App\Models\Command;
 use Illuminate\Http\Request;
@@ -118,6 +119,12 @@ class CommandController extends BaseController
     public function recipe($id)
     {
         $command = Command::findOrFail($id);
+
+        Log::create([
+            'log_type'   => 'command',
+            'user_id'    => auth()->id(),
+            'command_id' => $command->id
+        ]);
 
         return response()->json(['data' => $command->recipe]);
     }

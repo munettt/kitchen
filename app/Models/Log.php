@@ -22,4 +22,14 @@ class Log extends Model
             $model->created_at = $model->freshTimestamp();
         });
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function command()
+    {
+        return $this->belongsTo(Command::class,'command_id');
+    }
 }

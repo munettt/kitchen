@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\App;
+use App\Models\Backup;
+use App\Models\Command;
+use App\Models\Log;
+use Carbon\Carbon;
+
 class DashboardController extends BaseController
 {
     public function __construct()
@@ -19,6 +25,31 @@ class DashboardController extends BaseController
      */
     public function index()
     {
-        return view('front.dashboard.index');
+        $totalApps = App::count();
+        $totalCommands = Command::count();
+
+        $latest = [];
+        $backups = Backup::with('application')->get();
+
+        foreach ( $backups as $backup )
+        {
+            $latestFile = '';
+
+            if ( is_dir($backup->backup_path)) {
+                $files = array_where(scandir($backup->backup_path, SCANDIR_SORT_ASCENDING), function ($value) use ($backup) {
+                    return is_file($backup->backup_path . '/' . $value);
+                });
+
+                $latestFile = Carbon::createFromTimestamp(filectime($backup->backup_path.'/'.array_first($files)))->diffForHumans();
+            }
+
+            $latest[$backup->id] = $latestFile;
+
+        }
+
+        //Logs
+        $logs = Log::with('user','command.application')->orderBy('created_at','desc')->get();
+
+        return view('front.dashboard.index', compact('totalApps','totalCommands','latest','backups','logs'));
     }
 }

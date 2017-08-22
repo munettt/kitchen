@@ -32,3 +32,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* BUTTONS */
 .btn-rounded { border-radius:30px; text-transform:uppercase; padding: .5rem 1.75rem; margin-left:1rem }
+
+
+/* STATUS INDICATOR */
+.status-indicator.active { background-color:#138014; border-color:#666 }
+.status-indicator { display:inline-block; width:12px; height:12px; border-radius:25px; background:#eee; border:1px solid #ccc; margin-right:5px }
