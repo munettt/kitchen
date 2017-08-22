@@ -129,12 +129,12 @@ class CommandController extends BaseController
         $commands = explode(PHP_EOL,$command->recipe);
         $task = implode(' && ', array_map('trim', $commands));
 
-        if (empty($command->application->server_ip)) {
+        if (empty($command->application->ssh_ip)) {
             $process = new Process($task);
         } else {
             $delimiter = 'EOF-APP';
             $process = new Process(
-                "ssh ".$command->application->server_ip." 'bash -se' << \\$delimiter".PHP_EOL
+                "ssh ".$command->application->ssh_ip." 'bash -se' << \\$delimiter".PHP_EOL
                 .'set -e'.PHP_EOL
                 .$task.PHP_EOL
                 .$delimiter
@@ -155,13 +155,16 @@ class CommandController extends BaseController
         $commands = explode(PHP_EOL,$command->recipe);
         $task = implode(' && ', array_map('trim', $commands));
 
-        if (empty($command->application->server_ip)) {
+        $key = new RSA();
+        $key->loadKey($command->application->ssh_key);
+
+        if (empty($command->application->ssh_ip)) {
             $process = new Process($task);
         } else {
 
             $delimiter = 'EOF-APP';
             $process = new Process(
-                "ssh ".$command->application->server_ip." 'bash -se' << \\$delimiter".PHP_EOL
+                "ssh ".$command->application->ssh_ip." 'bash -se' << \\$delimiter".PHP_EOL
                 .'set -e'.PHP_EOL
                 .$task.PHP_EOL
                 .$delimiter

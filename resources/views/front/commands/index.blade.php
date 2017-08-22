@@ -20,8 +20,8 @@
                 <td>
                 @if ( isset($command->application))
                     {{ $command->application->domain OR '' }}
-                    @if ( !empty($command->application->server_ip) )
-                        <small class="text-muted ">({{$command->application->server_ip}})</small>
+                    @if ( !empty($command->application->ssh_ip) )
+                        <small class="text-muted ">({{$command->application->ssh_ip}})</small>
                     @endif
                 @endif
                 </td>

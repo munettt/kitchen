@@ -15,24 +15,17 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="server_ip" class="col-sm-2 col-form-label text-right">Server IP</label>
+            <label for="ssh_ip" class="col-sm-2 col-form-label text-right">Server IP</label>
             <div class="col-sm-10">
-                {!! Form::text('server_ip',null,['id'=>'server_ip','class'=>'form-control']) !!}
+                {!! Form::text('ssh_ip',null,['id'=>'ssh_ip','class'=>'form-control']) !!}
                 <small class="form-text text-muted">Optional</small>
             </div>
         </div>
-        <h5 class="my-5 text-muted">SSH Keys (optional)</h5>
+        <h5 class="my-5 text-muted">SSH Info (optional)</h5>
         <div class="form-group row">
-            <label for="ssh_name" class="col-sm-2 col-form-label text-right">SSH Key Name</label>
+            <label for="ssh_key" class="col-sm-2 col-form-label text-right">SSH Pub Key</label>
             <div class="col-sm-10">
-                {!! Form::text('ssh_name',null,['id'=>'ssh_name','class'=>'form-control']) !!}
-                <small class="form-text text-muted"></small>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="ssh_pubkey" class="col-sm-2 col-form-label text-right">SSH Pub Key</label>
-            <div class="col-sm-10">
-                {!! Form::textarea('ssh_pubkey',null,['id'=>'ssh_pubkey','class'=>'form-control','rows'=>2]) !!}
+                {!! Form::textarea('ssh_key',null,['id'=>'ssh_key','class'=>'form-control','rows'=>2]) !!}
                 <small class="form-text text-muted"></small>
             </div>
         </div>
