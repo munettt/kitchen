@@ -1,0 +1,80 @@
+// LAYOUT
+body {
+  background:#fff;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding-top:25px;
+  z-index: 1000;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #614385;
+  background: -webkit-linear-gradient(to right, #614385, #516395);
+  background: linear-gradient(to right, #614385, #516395);
+
+  .site-brand { text-align:center; margin-bottom:2rem;
+
+    img { height:60px; }
+  }
+
+  .nav-link {
+
+    font-size:1rem; color:#fff; display:block; text-align:center; opacity:0.6; transition:opacity 150ms ease-in;
+    position:relative;
+
+
+      &:hover { opacity:1; }
+      .icon { margin-bottom:.5rem; display:block; text-align:center; font-size:1.5rem }
+      &.active { opacity:1; border-radius:0; background: #563a79;
+
+        &::after {
+          width: 0;
+          height: 0;
+          border:none;
+          border-style: solid;
+          border-width: 15px 15px 15px 0;
+          border-color: transparent #ffffff transparent transparent;
+          content: " ";
+          position:absolute;
+          top:50%;
+          margin-top:-15px;
+          right:-5px;
+        }
+
+      }
+  }
+}
+
+header {
+  padding:1.5rem 2rem;
+
+  .dropdown-menu { min-width:275px; border-radius:0; box-shadow:3px 3px 0px 0px #efefef ; }
+}
+
+.content-wrapper { padding:1rem 2rem }
+
+// PUBLIC PAGE
+body.public {
+  background: #563a79;
+
+  > nav {
+    padding: 1rem 0;
+  }
+
+  .page-wrap {
+    margin-top: 4.4rem;
+
+    .container {
+      padding-top: 2.5rem
+    }
+  }
+
+  .content-wrap {
+    margin-top: 5rem;
+  }
+
+}

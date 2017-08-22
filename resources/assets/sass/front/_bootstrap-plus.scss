@@ -1,0 +1,33 @@
+//EXTRA JOICE FOR BOOTSTRAP
+body {
+  text-rendering: optimizeLegibility;
+}
+
+input, select, textarea, button {
+  font-family: inherit;
+}
+
+//FORMS
+.form-control {
+  &::placeholder {
+    color: $gray-500;
+  }
+}
+
+//TEXT UTILITIES
+.text-small {
+  font-size: 90%;
+}
+
+/* MODAL */
+.modal.fade .modal-dialog {
+  transform: perspective(400px) scale3d(0.95, .95, .95);
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.modal.show .modal-dialog {
+  transform: perspective(400px) scale3d(1, 1, 1);
+  animation-timing-function: ease-in;
+  opacity: 1;
+}

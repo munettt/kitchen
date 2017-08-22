@@ -1,0 +1,34 @@
+// CUSTOM CSS FOR THIS APP ONLY
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300
+}
+
+
+.dropdown-item {
+  font-size: 0.87rem;
+}
+
+.btn.btn-alt {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 90%;
+}
+
+/* CARDS */
+.card {
+  box-shadow: 0 1px 1px 0 #ececec;
+
+  .card-header {
+    h1, h2, h3, h4, h5 {
+      margin: 0;
+    }
+
+    &.bg-white {
+      background: #fff;
+    }
+  }
+}
+
+
+/* BUTTONS */
+.btn-rounded { border-radius:30px; text-transform:uppercase; padding: .5rem 1.75rem; margin-left:1rem }
