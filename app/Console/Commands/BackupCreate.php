@@ -49,12 +49,17 @@ class BackupCreate extends Command
             //$cmd ='mysqldump -u'.$application->db_username.' -p'.$application->db_password.' '.$application->db_database.' --routines  > '.$application->backup->backup_path.'\backup_'.date('d-m-Y').'.sql';
             //$process = new Process($cmd);
 
-            $date = date('d-m-Y Hi');
+            $date = date('d-m-Y-Hi');
+            $cmd = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_database.' | gzip -c | cat > '.$application->backup->backup_path.'/backup_'.$date.'.sql.gz';
 
-            $process = new Process('mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_database.' | gzip -c | cat > '.$application->backup_path.'/backup_'.$date.'.sql.gz');
+            $process = new Process($cmd);
             $process->run();
 
-            History::create(['log_type' => 'backup', 'response' => 'New backup created: backup_'.$date.'.sql.gz']);
+            History::create([
+                                'log_type' => 'backup',
+                                'commands'  => $cmd,
+                                'response' => 'New backup created: backup_'.$date.'.sql.gz'
+            ]);
 
         } else {
             throw new \Exception('Invalid application (id:'.$appId.') or database connection');

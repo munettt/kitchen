@@ -17,6 +17,7 @@ class CreateHistoriesTable extends Migration
             $table->increments('id');
             $table->string('log_type');
             $table->integer('command_id')->unsigned()->index()->nullable();
+            $table->text('commands')->nullable();
             $table->text('response')->nullable();
             $table->timestamp('created_at');
 
