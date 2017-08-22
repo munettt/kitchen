@@ -133,8 +133,10 @@ class CommandController extends BaseController
     {
         $data = $request->get('command');
 
-        $getCmds = explode(PHP_EOL,$data);
-        $commands = [];
+        $commands = explode(PHP_EOL,$data);
+        $command = implode(' && ', $commands);
+
+        /*$commands = [];
         $responses = '';
 
         foreach ( $getCmds as $cmd )
@@ -142,12 +144,12 @@ class CommandController extends BaseController
             $commands[] = $cmd;
         }
 
-        foreach ( $commands as $command) {
+        foreach ( $commands as $command) {*/
             $process = new Process($command);
             $process->run();
-            $responses .= $process->getOutput().PHP_EOL;
-        }
+            $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput()) ;
+        //}
 
-        return response()->json(['data' => $responses]);
+        return response()->json(['data' => $responses,'command' => $command]);
     }
 }

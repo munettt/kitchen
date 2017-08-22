@@ -106,7 +106,7 @@
 
             background:#444;
             color:#fff;
-            font-size:0.875rem;
+            font-size:0.8rem;
             padding:2rem;
             height:250px;
             overflow-x:auto;
