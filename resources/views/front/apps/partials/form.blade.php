@@ -38,6 +38,13 @@
         </div>
         <h5 class="my-5 text-muted">Database Settings (optional)</h5>
         <div class="form-group row">
+            <label for="db_host" class="col-sm-2 col-form-label text-right">DB Host</label>
+            <div class="col-sm-10">
+                {!! Form::text('db_host',null,['id'=>'db_host','autocomplete'=>'off','class'=>'form-control','placeholder'=>'localhost']) !!}
+                <small class="form-text text-muted">Database host</small>
+            </div>
+        </div>
+        <div class="form-group row">
             <label for="db_username" class="col-sm-2 col-form-label text-right">DB Username</label>
             <div class="col-sm-10">
                 {!! Form::text('db_username',null,['id'=>'db_username','autocomplete'=>'off','class'=>'form-control']) !!}
