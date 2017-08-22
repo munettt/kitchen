@@ -21,7 +21,7 @@
                 @if ( isset($command->application))
                     {{ $command->application->domain OR '' }}
                     @if ( !empty($command->application->server_ip) )
-                        <span class="text-muted">({{$command->application->server_ip}}</span>
+                        <small class="text-muted ">({{$command->application->server_ip}})</small>
                     @endif
                 @endif
                 </td>
