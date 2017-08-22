@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Models\App;
 use App\Models\Backup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class BackupController extends BaseController
 {
@@ -112,6 +113,23 @@ class BackupController extends BaseController
         Backup::findOrFail($id)->delete();
 
         flash('Backup deleted.');
+
+        return redirect()->route('backup.index');
+    }
+
+    public function createDir($id)
+    {
+        $backup = Backup::findOrFail($id);
+
+        $result = File::makeDirectory($backup->backup_path, 0775, true);
+
+        if ( $result ) {
+            flash('Backup folder "'.$backup->backup_path.'" created.');
+        }
+        else
+        {
+            flash('Unable to create folder "'.$backup->backup_path.'".','danger');
+        }
 
         return redirect()->route('backup.index');
     }

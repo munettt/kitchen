@@ -34,3 +34,6 @@ Route::get('/oauth/callback/{provider}', 'Auth\SocialAuthController@callback');
 Route::resource('apps', 'Front\AppController');
 Route::resource('commands', 'Front\CommandController');
 Route::resource('backup', 'Front\BackupController');
+
+//extra
+Route::get('backup/{id}/create-dir','Front\BackupController@createDir')->name('backup.create-dir');

@@ -26,14 +26,14 @@
                         $files = scandir($backup->backup_path, SCANDIR_SORT_DESCENDING);
                         $newest_file = $files[0];
 
-                        if ( !empty($newest_file) ) {
+                        if ( !empty($newest_file) && $newest_file != '..' && $newest_file != '.' ) {
                             echo \Carbon\Carbon::createFromTimestamp(filectime($backup->backup_path.'/'.$newest_file))->diffForHumans();
                         } else {
-                            echo '-';
+                            echo '<span class="text-muted">Never</span>';
                         }
 
                     } else {
-                        echo 'Invalid dir: backup_path';
+                        echo 'Invalid dir: backup_path <a class="badge badge-primary" href="'.route('backup.create-dir',$backup->id).'">Create?</a>';
                     }
                     @endphp
                 </td>
