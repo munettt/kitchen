@@ -134,7 +134,7 @@ class CommandController extends BaseController
         } else {
             $delimiter = 'EOF-APP';
             $process = new Process(
-                "ssh -o StrictHostKeyChecking=no ".$command->application->server_ip." 'bash -se' << \\$delimiter".PHP_EOL
+                "ssh ".$command->application->server_ip." 'bash -se' << \\$delimiter".PHP_EOL
                 .'set -e'.PHP_EOL
                 .$task.PHP_EOL
                 .$delimiter
@@ -161,7 +161,7 @@ class CommandController extends BaseController
 
             $delimiter = 'EOF-APP';
             $process = new Process(
-                "ssh -o StrictHostKeyChecking=no ".$command->application->server_ip." 'bash -se' << \\$delimiter".PHP_EOL
+                "ssh ".$command->application->server_ip." 'bash -se' << \\$delimiter".PHP_EOL
                 .'set -e'.PHP_EOL
                 .$task.PHP_EOL
                 .$delimiter
