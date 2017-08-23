@@ -55,7 +55,7 @@
         <div class="form-group row">
             <label for="db_password" class="col-sm-2 col-form-label text-right">DB Password</label>
             <div class="col-sm-10">
-                {!! Form::text('db_password',['id'=>'db_password','autocomplete'=>'off','class'=>'form-control']) !!}
+                {!! Form::text('db_password',null,['id'=>'db_password','autocomplete'=>'off','class'=>'form-control']) !!}
                 <small class="form-text text-muted">Database password</small>
             </div>
         </div>
