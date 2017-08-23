@@ -4,6 +4,7 @@ namespace App\Services;
 use Laravel\Socialite\Contracts\User as ProviderUser;
 use Illuminate\Support\Facades\Mail;
 use App\Models\SocialAccount;
+use App\Mail\NewUser;
 use App\Models\User;
 
 class SocialAccountService
@@ -62,7 +63,7 @@ class SocialAccountService
                 ];
 
                 foreach ($admins as $admin) {
-                    Mail::to($admin->email)->send(new OrderShipped($content));
+                    Mail::to($admin->email)->send(new NewUser($content));
                 }
             }
 
