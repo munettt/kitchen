@@ -155,6 +155,7 @@ class CommandController extends BaseController
                 throw new \Exception('Login Failed');
             }
 
+            $ssh->setTimeout(0);
             $responses = $ssh->exec($task);
         }
 
