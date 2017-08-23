@@ -85,6 +85,16 @@
 
                        $("#modalCommand #command-box").append(response.data.data.recipe.replace(/\n/g,"<br>"));
 
+                       //notification
+                       window.onblur = function() {
+                           pageTitleNotification.on("Command executed.", 1000);
+                       };
+
+                       window.onfocus = function() {
+                           pageTitleNotification.off
+                       };
+
+                       //execute
                        axios.post('/commands/exec', {
                            id: response.data.data.id
                        }).then(function (execResponse) {
