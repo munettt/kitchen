@@ -138,6 +138,21 @@ class BackupController extends BaseController
         return redirect()->route('backup.index');
     }
 
+    public function destroyBackup($id,$file)
+    {
+        $backup = Backup::findOrFail($id);
+
+        if ( File::exists($backup->backup_path.'/'.$file) ) {
+
+            File::delete($backup->backup_path.'/'.$file);
+
+            flash('File deleted');
+        }
+
+
+        return redirect()->route('backup.show',$id);
+    }
+
     public function createDir($id)
     {
         $this->hasPermission('update-backup');
