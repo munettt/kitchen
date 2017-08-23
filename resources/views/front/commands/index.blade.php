@@ -85,6 +85,15 @@
 
                        $("#modalCommand #command-box").append(response.data.data.recipe.replace(/\n/g,"<br>"));
 
+                       //execute
+                       axios.post('/commands/exec', {
+                           id: response.data.data.id
+                       }).then(function (execResponse) {
+
+                       //append response
+                       $("#modalCommand #command-box").append(execResponse.data.data.replace(/\n/g,"<br>"));
+
+
                        //notification
                        window.onblur = function() {
                            pageTitleNotification.on("Command executed.", 1000);
@@ -94,11 +103,6 @@
                            pageTitleNotification.off
                        };
 
-                       //execute
-                       axios.post('/commands/exec', {
-                           id: response.data.data.id
-                       }).then(function (execResponse) {
-                           $("#modalCommand #command-box").append(execResponse.data.data.replace(/\n/g,"<br>"));
                        }).catch(function (postError) {
                            console.log(postError);
                        });
