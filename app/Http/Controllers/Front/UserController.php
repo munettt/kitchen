@@ -73,6 +73,8 @@ class UserController extends BaseController
         $user = User::findOrFail($id);
         $roles = Role::all()->pluck('name','id');
 
+        $user->role = isset($user->roles) ? $user->roles->first()->id : null;
+
         return view('front.users.edit',compact('user','roles'));
     }
 
