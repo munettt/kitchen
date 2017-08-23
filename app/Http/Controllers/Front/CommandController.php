@@ -122,6 +122,13 @@ class CommandController extends BaseController
     {
         $command = Command::findOrFail($id);
 
+        return response()->json(['data' => $command]);
+    }
+
+    public function exec(Request $request)
+    {
+        $command = Command::findOrFail($request->get('id'));
+
         Log::create([
             'log_type'   => 'command',
             'user_id'    => auth()->id(),
@@ -152,26 +159,5 @@ class CommandController extends BaseController
         }
 
         return response()->json(['data' => $responses]);
-    }
-
-    public function test($id)
-    {
-        $command = Command::findOrFail($id);
-
-        $commands = explode(PHP_EOL,$command->recipe);
-        $task = implode(' && ', array_map('trim', $commands));
-
-        $key = new RSA();
-        $key->loadKey($command->application->ssh_key);
-
-        $ssh = new SSH2($command->application->ssh_ip);
-        if (!$ssh->login($command->application->ssh_user, $key)) {
-            throw new \Exception('Login Failed');
-        }
-
-        $responses = $ssh->exec($task);
-
-        print_r($responses);
-        exit;
     }
 }
