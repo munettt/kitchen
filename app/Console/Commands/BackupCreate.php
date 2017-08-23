@@ -53,7 +53,7 @@ class BackupCreate extends Command
             //$process = new Process($cmd);
 
             $date = date('d-m-Y-Hi');
-            $filename = 'backup_'.$date.'.sql.gz';
+            $filename = $application->db_name.'_'.$date.'.sql.gz';
 
             if (empty($application->ssh_ip))
             {
@@ -99,7 +99,7 @@ class BackupCreate extends Command
             History::create([
                                 'log_type' => 'backup',
                                 'commands'  => $task ?? $cmd,
-                                'response' => 'New backup created: backup_'.$date.'.sql.gz'
+                                'response' => 'New backup created: '.$filename
             ]);
 
         } else {
