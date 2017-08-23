@@ -19,7 +19,22 @@ class SocialAccountService
         }
         else
         {
+            //check email
+            $allowedDomains = config('kitchen.allowed-domains');
 
+            if ( !empty($allowedDomains) )
+            {
+                $allowedDomains = array_map('trim',explode(',',$allowedDomains));
+
+                if ( !in_array( explode('@', $providerUser->getEmail())[1], $allowedDomains)  )
+                {
+                    throw new \Exception('Only these domain(s) are allowed to sign in: '.config('kitchen.allowed-domains'));
+                }
+            }
+
+
+
+            //account
             $account = new SocialAccount([
                 'provider_user_id' => $providerUser->getId(),
                 'provider'         => $provider,
