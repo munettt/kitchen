@@ -128,24 +128,18 @@ class CommandController extends BaseController
             'command_id' => $command->id
         ]);
 
-        $commands = explode(PHP_EOL,$command->recipe);
+        $commands = explode(PHP_EOL, $command->recipe);
         $task = implode(' && ', array_map('trim', $commands));
 
-        if (empty($command->application->ssh_ip)) {
-            $process = new Process($task);
-        } else {
-            $delimiter = 'EOF-APP';
-            $process = new Process(
-                "ssh ".$command->application->ssh_ip." 'bash -se' << \\$delimiter".PHP_EOL
-                .'set -e'.PHP_EOL
-                .$task.PHP_EOL
-                .$delimiter
-            );
+        $key = new RSA();
+        $key->loadKey($command->application->ssh_key);
+
+        $ssh = new SSH2($command->application->ssh_ip);
+        if (!$ssh->login($command->application->ssh_user, $key)) {
+            throw new \Exception('Login Failed');
         }
 
-        $process->run();
-
-        $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
+        $responses = $ssh->exec($task);
 
         return response()->json(['data' => $responses]);
     }
@@ -157,36 +151,15 @@ class CommandController extends BaseController
         $commands = explode(PHP_EOL,$command->recipe);
         $task = implode(' && ', array_map('trim', $commands));
 
-
         $key = new RSA();
         $key->loadKey($command->application->ssh_key);
 
         $ssh = new SSH2($command->application->ssh_ip);
-        if (!$ssh->login('username', $key)) {
-            exit('Login Failed');
+        if (!$ssh->login($command->application->ssh_user, $key)) {
+            throw new \Exception('Login Failed');
         }
 
-        echo $ssh->exec('pwd');
-        echo $ssh->exec('ls -la');
-
-        exit;
-
-        if (empty($command->application->ssh_ip)) {
-            $process = new Process($task);
-        } else {
-
-            $delimiter = 'EOF-APP';
-            $process = new Process(
-                "ssh ".$command->application->ssh_ip." 'bash -se' << \\$delimiter".PHP_EOL
-                .'set -e'.PHP_EOL
-                .$task.PHP_EOL
-                .$delimiter
-            );
-        }
-
-        $process->run();
-
-        $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
+        $responses = $ssh->exec($task);
 
         print_r($responses);
         exit;

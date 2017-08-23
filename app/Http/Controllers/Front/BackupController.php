@@ -17,6 +17,7 @@ class BackupController extends BaseController
         view()->share('nav', 'backup');
 
         $frequencies = ['daily'=>'Daily','2x'=>'Twice Daily','1x' => 'Hourly'];
+
         view()->share('frequencies', $frequencies);
     }
 
