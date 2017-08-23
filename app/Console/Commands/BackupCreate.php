@@ -59,31 +59,41 @@ class BackupCreate extends Command
             {
                 $cmd = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$application->backup->backup_path.'/'.$filename;
 
+                $this->info('Creating backup '.$filename);
+
                 $process = new Process($cmd);
                 $process->run();
+
+                $this->info(!empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
+
+                $this->info('All Done!');
             }
             else
             {
-                $key = new RSA();
-                $key->loadKey($application->ssh_key);
+                //backup
+                $this->info('Creating backup '.$filename.' on '.$application->ssh_ip);
 
-                $ssh = new SSH2($application->ssh_ip);
-                $ssh->setTimeout(0);
-
-                if (!$ssh->login($application->ssh_user, $key)) {
-                    throw new \Exception('Login Failed');
-                }
-
-                //task
                 $task = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$filename;
-                $ssh->exec($task);
+
+                $process = new Process('ssh '.$application->ssh_ip." '".$task."'");
+                $process->run();
+
+                $this->info(!empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
 
                 //local process
+                $this->info('Copying back locally');
                 $process = new Process('scp '.$application->ssh_ip.':~/'.$filename.' '.$application->backup->backup_path.'/'.$filename);
                 $process->run();
 
+                $this->info(!empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
+
                 //delete back
-                $ssh->exec('rm '.$filename);
+                $process = new Process('ssh '.$application->ssh_ip." 'rm -f ".$filename."'");
+                $process->run();
+                $this->info(!empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
+
+                $this->info('All Done!');
+
             }
 
             History::create([
