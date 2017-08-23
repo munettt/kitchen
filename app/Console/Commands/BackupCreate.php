@@ -51,10 +51,11 @@ class BackupCreate extends Command
             //$process = new Process($cmd);
 
             $date = date('d-m-Y-Hi');
+            $filename = 'backup_'.$date.'.sql.gz';
 
             if (empty($application->ssh_ip))
             {
-                $cmd = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$application->backup->backup_path.'/backup_'.$date.'.sql.gz';
+                $cmd = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$application->backup->backup_path.'/'.$filename;
 
                 $process = new Process($cmd);
                 $process->run();
@@ -65,18 +66,23 @@ class BackupCreate extends Command
                 $key->loadKey($application->ssh_key);
 
                 $ssh = new SSH2($application->ssh_ip);
+                $ssh->setTimeout(0);
+
                 if (!$ssh->login($application->ssh_user, $key)) {
                     throw new \Exception('Login Failed');
                 }
 
                 //task
-
-
-                $ssh->setTimeout(0);
+                $task = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$filename;
                 $ssh->exec($task);
+
+                //local process
+                $process = new Process('scp '.$application->ssh_ip.':~/'.$filename.' '.$application->backup->backup_path.'/'.$filename);
+                $process->run();
+
+                //delete back
+                $ssh->exec('rm '.$filename);
             }
-
-
 
             History::create([
                                 'log_type' => 'backup',
