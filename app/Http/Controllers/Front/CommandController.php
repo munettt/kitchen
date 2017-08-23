@@ -128,18 +128,28 @@ class CommandController extends BaseController
             'command_id' => $command->id
         ]);
 
-        $commands = explode(PHP_EOL, $command->recipe);
+        $commands = explode(PHP_EOL,$command->recipe);
         $task = implode(' && ', array_map('trim', $commands));
 
-        $key = new RSA();
-        $key->loadKey($command->application->ssh_key);
+        if (empty($command->application->ssh_ip))
+        {
+            $process = new Process($task);
+            $process->run();
 
-        $ssh = new SSH2($command->application->ssh_ip);
-        if (!$ssh->login($command->application->ssh_user, $key)) {
-            throw new \Exception('Login Failed');
+            $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
         }
+        else
+        {
+            $key = new RSA();
+            $key->loadKey($command->application->ssh_key);
 
-        $responses = $ssh->exec($task);
+            $ssh = new SSH2($command->application->ssh_ip);
+            if (!$ssh->login($command->application->ssh_user, $key)) {
+                throw new \Exception('Login Failed');
+            }
+
+            $responses = $ssh->exec($task);
+        }
 
         return response()->json(['data' => $responses]);
     }
