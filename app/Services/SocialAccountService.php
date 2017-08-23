@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use Laravel\Socialite\Contracts\User as ProviderUser;
+use Illuminate\Support\Facades\Mail;
 use App\Models\SocialAccount;
 use App\Models\User;
 
@@ -52,6 +53,17 @@ class SocialAccountService
                 ]);
 
                 $user->roles()->sync([2]);
+
+                //email admins
+                $admins = User::whereRoleIs('admin')->get();
+                $content = [
+                    'title' => 'New user registered',
+                    'body'  => 'New user registered: ' . $providerUser->getEmail()
+                ];
+
+                foreach ($admins as $admin) {
+                    Mail::to($admin->email)->send(new OrderShipped($content));
+                }
             }
 
             $account->user()->associate($user);
