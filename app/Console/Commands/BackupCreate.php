@@ -37,6 +37,7 @@ class BackupCreate extends Command
      * Execute the console command.
      *
      * @return mixed
+     * @throws \Exception
      */
     public function handle()
     {
@@ -44,20 +45,42 @@ class BackupCreate extends Command
 
         $application = App::find($appId);
 
-        if ( $application && !empty($application->db_database) && !empty($application->db_username) ) {
+        if ( $application && !empty($application->db_name) && !empty($application->db_username) ) {
 
-            //$cmd ='mysqldump -u'.$application->db_username.' -p'.$application->db_password.' '.$application->db_database.' --routines  > '.$application->backup->backup_path.'\backup_'.date('d-m-Y').'.sql';
+            //$cmd ='mysqldump -u'.$application->db_username.' -p'.$application->db_password.' '.$application->db_name.' --routines  > '.$application->backup->backup_path.'\backup_'.date('d-m-Y').'.sql';
             //$process = new Process($cmd);
 
             $date = date('d-m-Y-Hi');
-            $cmd = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_database.' | gzip -c | cat > '.$application->backup->backup_path.'/backup_'.$date.'.sql.gz';
 
-            $process = new Process($cmd);
-            $process->run();
+            if (empty($application->ssh_ip))
+            {
+                $cmd = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$application->backup->backup_path.'/backup_'.$date.'.sql.gz';
+
+                $process = new Process($cmd);
+                $process->run();
+            }
+            else
+            {
+                $key = new RSA();
+                $key->loadKey($application->ssh_key);
+
+                $ssh = new SSH2($application->ssh_ip);
+                if (!$ssh->login($application->ssh_user, $key)) {
+                    throw new \Exception('Login Failed');
+                }
+
+                //task
+
+
+                $ssh->setTimeout(0);
+                $ssh->exec($task);
+            }
+
+
 
             History::create([
                                 'log_type' => 'backup',
-                                'commands'  => $cmd,
+                                'commands'  => $task ?? $cmd,
                                 'response' => 'New backup created: backup_'.$date.'.sql.gz'
             ]);
 

@@ -55,14 +55,14 @@
         <div class="form-group row">
             <label for="db_password" class="col-sm-2 col-form-label text-right">DB Password</label>
             <div class="col-sm-10">
-                {!! Form::password('db_password',['id'=>'db_password','class'=>'form-control']) !!}
+                {!! Form::text('db_password',['id'=>'db_password','autocomplete'=>'off','class'=>'form-control']) !!}
                 <small class="form-text text-muted">Database password</small>
             </div>
         </div>
         <div class="form-group row">
-            <label for="db_database" class="col-sm-2 col-form-label text-right">DB Name</label>
+            <label for="db_name" class="col-sm-2 col-form-label text-right">DB Name</label>
             <div class="col-sm-10">
-                {!! Form::text('db_database',null,['id'=>'db_database', 'autocomplete' => 'off', 'class'=>'form-control']) !!}
+                {!! Form::text('db_name',null,['id'=>'db_name', 'autocomplete' => 'off', 'class'=>'form-control']) !!}
                 <small class="form-text text-muted">Database name</small>
             </div>
         </div>
