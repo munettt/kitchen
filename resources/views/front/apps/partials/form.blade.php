@@ -20,7 +20,6 @@
             <label for="ssh_ip" class="col-sm-2 col-form-label text-right">Server IP</label>
             <div class="col-sm-10">
                 {!! Form::text('ssh_ip',null,['id'=>'ssh_ip','class'=>'form-control']) !!}
-                <small class="form-text text-muted">Optional</small>
             </div>
         </div>
         <div class="form-group row">
