@@ -12,6 +12,7 @@
                 {!! Form::select('frequency',$frequencies, null,['id'=>'frequency','class'=>'select','required']) !!}
             </div>
         </div>
+        <h5 class="my-5 text-muted">Storage Location (local)</h5>
         <div class="form-group row">
             <label for="backup_url" class="col-sm-2 col-form-label text-right">URL</label>
             <div class="col-sm-10">
