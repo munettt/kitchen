@@ -25,7 +25,7 @@
                     @endif
                 @endif
                 </td>
-                <td><a href="#" class="btn btn-secondary btn-sm btn-cmd" data-id="{{$command->id}}"><i class="mr-1 icon ion-flash"></i> Run Command</a></td>
+                <td><button class="btn btn-secondary btn-sm btn-cmd" data-id="{{$command->id}}"><i class="mr-1 icon ion-flash"></i> Run Command</button></td>
                 <td>
                     <a href="{{route('commands.edit',$command->id)}}"><i class="icon ion-edit text-warning mr-2"></i></a>
                     <a href="#" data-toggle="delete" class="text-danger"><i class="icon ion-close-circled"></i></a>
@@ -68,14 +68,18 @@ $(function () {
 
     $('.btn-cmd').click(function (e) {
 
-        e.preventDefault();
+        var btn = $(this);
+
+        //e.preventDefault();
 
         var confirmed = confirm('Are you sure?');
 
         if (confirmed === true) {
 
+            button_loading(btn);
+
             if ($(this).data('id') != '') {
-                $('#modalCommand').modal('show');
+
                 $("#modalCommand #command-box").html('');
 
                 //perform axios
@@ -89,8 +93,14 @@ $(function () {
                             id: response.data.data.id
                         }).then(function (execResponse) {
 
+                            //disable button
+                            button_loading(btn);
+
                             //append response
                             $("#modalCommand #command-box").append(execResponse.data.data.replace(/\n/g, "<br>"));
+
+                            //show modal
+                            $('#modalCommand').modal('show');
 
 
                         }).catch(function (postError) {
@@ -98,6 +108,7 @@ $(function () {
                         });
                     })
                     .catch(function (error) {
+                        button_loading(btn);
                         console.log(error);
                     });
 

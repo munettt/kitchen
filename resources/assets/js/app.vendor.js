@@ -1,3 +1,33 @@
+/**
+ * Toggle loading state for button
+ * Example: <button class="btn btn-primary">Button</button>
+ */
+function button_loading(btn, dark)
+{
+    dark = typeof dark !== 'undefined' ? dark : true;
+
+    var darkClass = dark === true ? ' btn-loading-dark' : '';
+
+    //must be a button
+    if ( btn.is('button') === false )
+    {
+        return false;
+    }
+
+    if ( btn.hasClass('btn-loading') )
+    {
+        btn.html(btn.data('label')).data('label','');
+        btn.removeClass('btn-loading' + darkClass);
+        btn.prop('disabled', false);
+    }
+    else
+    {
+        btn.data('label', btn.html()).html('&nbsp;');
+        btn.addClass('btn-loading'+ darkClass);
+        btn.prop('disabled', true);
+    }
+}
+
 $(function () {
     $('.content-wrapper .alert-flash').delay(1000).fadeOut(150);
 
