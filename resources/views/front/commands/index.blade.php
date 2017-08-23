@@ -64,59 +64,49 @@
 
 @push('scripts')
 <script type="text/javascript">
-    $(function(){
+$(function () {
 
-       $('.btn-cmd').click(function(e)
-       {
+    $('.btn-cmd').click(function (e) {
 
-           e.preventDefault();
+        e.preventDefault();
 
-           var confirmed = confirm('Are you sure?');
+        var confirmed = confirm('Are you sure?');
 
-           if (confirmed === true) {
+        if (confirmed === true) {
 
-               if ($(this).data('id') != '') {
-                   $('#modalCommand').modal('show');
-                   $("#modalCommand #command-box").html('');
+            if ($(this).data('id') != '') {
+                $('#modalCommand').modal('show');
+                $("#modalCommand #command-box").html('');
 
-                   //perform axios
-                   axios.get('/commands/'+$(this).data('id')+'/recipe')
-                   .then(function (response) {
+                //perform axios
+                axios.get('/commands/' + $(this).data('id') + '/recipe')
+                    .then(function (response) {
 
-                       $("#modalCommand #command-box").append(response.data.data.recipe.replace(/\n/g,"<br>"));
+                        $("#modalCommand #command-box").append(response.data.data.recipe.replace(/\n/g, "<br>"));
 
-                       //execute
-                       axios.post('/commands/exec', {
-                           id: response.data.data.id
-                       }).then(function (execResponse) {
+                        //execute
+                        axios.post('/commands/exec', {
+                            id: response.data.data.id
+                        }).then(function (execResponse) {
 
-                       //append response
-                       $("#modalCommand #command-box").append(execResponse.data.data.replace(/\n/g,"<br>"));
+                            //append response
+                            $("#modalCommand #command-box").append(execResponse.data.data.replace(/\n/g, "<br>"));
 
 
-                       //notification
-                       window.onblur = function() {
-                           pageTitleNotification.on("Command executed.", 1000);
-                       };
+                        }).catch(function (postError) {
+                            console.log(postError);
+                        });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
 
-                       window.onfocus = function() {
-                           pageTitleNotification.off
-                       };
-
-                       }).catch(function (postError) {
-                           console.log(postError);
-                       });
-                   })
-                   .catch(function (error) {
-                       console.log(error);
-                   });
-
-               } else {
-                   console.log('Data ID is empty.')
-               }
-           }
-       });
+            } else {
+                console.log('Data ID is empty.')
+            }
+        }
     });
+});
 </script>
 @endpush
 
