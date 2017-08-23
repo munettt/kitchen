@@ -27,6 +27,8 @@ class CommandController extends BaseController
      */
     public function index()
     {
+        $this->hasPermission('read-commands');
+
         $commands = Command::with('application')->paginate(30);
 
         return view('front.commands.index',compact('commands'));
@@ -39,6 +41,8 @@ class CommandController extends BaseController
      */
     public function create()
     {
+        $this->hasPermission('create-commands');
+
         $apps = App::all()->pluck('domain','id');
 
         return view('front.commands.create',compact('apps'));
@@ -52,6 +56,8 @@ class CommandController extends BaseController
      */
     public function store(Request $request)
     {
+        $this->hasPermission('create-commands');
+
         Command::create($request->all());
 
         flash('Command created.');
@@ -78,6 +84,7 @@ class CommandController extends BaseController
      */
     public function edit($id)
     {
+        $this->hasPermission('update-commands');
 
         $command = Command::with('application')->findOrFail($id);
         $apps = App::all()->pluck('domain','id');
@@ -94,6 +101,8 @@ class CommandController extends BaseController
      */
     public function update(Request $request, $id)
     {
+        $this->hasPermission('update-commands');
+
         $command = Command::findOrFail($id);
 
         $command->update($request->all());
@@ -111,6 +120,8 @@ class CommandController extends BaseController
      */
     public function destroy($id)
     {
+        $this->hasPermission('delete-commands');
+
         Command::findOrFail($id)->delete();
 
         flash('Command deleted.');
@@ -123,6 +134,8 @@ class CommandController extends BaseController
      */
     public function recipe($id)
     {
+        $this->hasPermission('read-commands');
+
         $command = Command::findOrFail($id);
 
         return response()->json(['data' => $command]);
@@ -136,6 +149,8 @@ class CommandController extends BaseController
      */
     public function exec(Request $request)
     {
+        $this->hasPermission('read-commands');
+
         $command = Command::findOrFail($request->get('id'));
 
         Log::create([

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page-title')
-    <h1>{{$title}} <a href="{{route('commands.create')}}" class="btn btn-primary btn-rounded">Add New</a></h1>
+    <h1>{{$title}} @permission('create-commands')<a href="{{route('commands.create')}}" class="btn btn-primary btn-rounded">Add New</a>@endpermission</h1>
 @endsection
 @section('content')
     <table class="table table-hover">
@@ -27,12 +27,17 @@
                 </td>
                 <td><button class="btn btn-secondary btn-sm btn-cmd" data-id="{{$command->id}}"><i class="mr-1 icon ion-flash"></i> Run Command</button></td>
                 <td>
-                    <a href="{{route('commands.edit',$command->id)}}"><i class="icon ion-edit text-warning mr-2"></i></a>
+                    @permission('update-commands')
+                        <a href="{{route('commands.edit',$command->id)}}"><i class="icon ion-edit text-warning mr-2"></i></a>
+                    @endpermission
+
+                    @permission('delete-commands')
                     <a href="#" data-toggle="delete" class="text-danger"><i class="icon ion-close-circled"></i></a>
                     <form class="delete" action="{{route('commands.destroy',$command->id)}}" method="POST" style="display: none;">
                         <input type="hidden" name="_method" value="DELETE">
                         {{ csrf_field() }}
                     </form>
+                    @endpermission
                 </td>
             </tr>
         @endforeach

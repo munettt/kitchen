@@ -50,6 +50,8 @@ class SocialAccountService
                     'name'     => $providerUser->getName(),
                     'password' => str_random(8),
                 ]);
+
+                $user->roles()->sync([2]);
             }
 
             $account->user()->associate($user);

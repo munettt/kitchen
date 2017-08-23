@@ -23,6 +23,9 @@
                 <li class="nav-item"><a class="nav-link  {{$nav=='apps'?'active':''}}" href="{{url('/apps')}}"><i class="icon ion-android-cloud-outline"></i> Applications</a></li>
                 <li class="nav-item"><a class="nav-link  {{$nav=='commands'?'active':''}}" href="{{url('/commands')}}"><em class="icon ion-clipboard"></em> Commands</a></li>
                 <li class="nav-item"><a class="nav-link  {{$nav=='backup'?'active':''}}" href="{{url('/backup')}}"><em class="icon ion-lock-combination"></em> Backup</a></li>
+                @role('admin')
+                <li class="nav-item"><a class="nav-link  {{$nav=='users'?'active':''}}" href="{{url('/users')}}"><em class="icon ion-person-stalker"></em> Users</a></li>
+                @endrole
             </ul>
         </div>
         <div class="col-12 col-lg-11 col-md-10 ml-auto">

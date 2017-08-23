@@ -28,6 +28,8 @@ class BackupController extends BaseController
      */
     public function index()
     {
+        $this->hasPermission('read-backup');
+
         $backups = (new Backup)->paginate(30);
 
         return view('front.backup.index',compact('backups'));
@@ -40,6 +42,8 @@ class BackupController extends BaseController
      */
     public function create()
     {
+        $this->hasPermission('create-backup');
+
         $apps = App::has('backup','<',1)->get()->pluck('domain','id');
 
         return view('front.backup.create',compact('apps'));
@@ -53,6 +57,8 @@ class BackupController extends BaseController
      */
     public function store(Request $request)
     {
+        $this->hasPermission('create-backup');
+
         Backup::create($request->all());
 
         flash('Backup created.');
@@ -68,6 +74,8 @@ class BackupController extends BaseController
      */
     public function show($id)
     {
+        $this->hasPermission('read-backup');
+
         $backup = Backup::findOrFail($id);
 
         $files = array_where(scandir($backup->backup_path, SCANDIR_SORT_DESCENDING), function($value) use ($backup) {
@@ -85,6 +93,8 @@ class BackupController extends BaseController
      */
     public function edit($id)
     {
+        $this->hasPermission('update-backup');
+
         $backup = Backup::findOrFail($id);
         $apps = App::all()->pluck('domain','id');
 
@@ -100,6 +110,8 @@ class BackupController extends BaseController
      */
     public function update(Request $request, $id)
     {
+        $this->hasPermission('update-backup');
+
         $backup = Backup::findOrFail($id);
 
         $backup->update($request->all());
@@ -117,6 +129,8 @@ class BackupController extends BaseController
      */
     public function destroy($id)
     {
+        $this->hasPermission('delete-backup');
+
         Backup::findOrFail($id)->delete();
 
         flash('Backup deleted.');
@@ -126,6 +140,8 @@ class BackupController extends BaseController
 
     public function createDir($id)
     {
+        $this->hasPermission('update-backup');
+
         $backup = Backup::findOrFail($id);
 
         $result = File::makeDirectory($backup->backup_path, 0775, true);

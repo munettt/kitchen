@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Models\App;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class AppController extends BaseController
+class UserController extends BaseController
 {
     public function __construct()
     {
         parent::__construct();
 
-        view()->share('title', 'Applications');
-        view()->share('nav', 'apps');
+        view()->share('title', 'Users');
+        view()->share('nav', 'users');
+
+        $this->middleware('role:admin');
     }
 
     /**
@@ -22,11 +25,9 @@ class AppController extends BaseController
      */
     public function index()
     {
-        $this->hasPermission('read-apps');
+        $users = User::with('roles')->paginate(30);
 
-        $apps = App::all();
-
-        return view('front.apps.index',compact('apps'));
+        return view('front.users.index',compact('users'));
     }
 
     /**
@@ -36,9 +37,7 @@ class AppController extends BaseController
      */
     public function create()
     {
-        $this->hasPermission('create-apps');
-
-        return view('front.apps.create');
+        //
     }
 
     /**
@@ -49,13 +48,7 @@ class AppController extends BaseController
      */
     public function store(Request $request)
     {
-        $this->hasPermission('create-apps');
-
-        App::create($request->all());
-
-        flash('Application created.');
-
-        return redirect()->route('apps.index');
+        //
     }
 
     /**
@@ -77,11 +70,10 @@ class AppController extends BaseController
      */
     public function edit($id)
     {
-        $this->hasPermission('update-apps');
+        $user = User::findOrFail($id);
+        $roles = Role::all()->pluck('name','id');
 
-        $app = App::findOrFail($id);
-
-        return view('front.apps.edit',compact('app'));
+        return view('front.users.edit',compact('user','roles'));
     }
 
     /**
@@ -93,15 +85,18 @@ class AppController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        $this->hasPermission('update-apps');
+        $user = User::findOrFail($id);
 
-        $app = App::findOrFail($id);
+        $user->update($request->all());
 
-        $app->update($request->all());
+        //role
+        if ( $request->has('role') ) {
+            $user->roles()->sync([$request->get('role')]);
+        }
 
-        flash('Application updated.');
+        flash('User updated.');
 
-        return redirect()->route('apps.index');
+        return redirect()->route('users.index');
     }
 
     /**
@@ -112,12 +107,10 @@ class AppController extends BaseController
      */
     public function destroy($id)
     {
-        $this->hasPermission('delete-apps');
+        User::findOrFail($id)->delete();
 
-        App::findOrFail($id)->delete();
+        flash('User deleted.');
 
-        flash('Application deleted.');
-
-        return redirect()->route('apps.index');
+        return redirect()->route('users.index');
     }
 }

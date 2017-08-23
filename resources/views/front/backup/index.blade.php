@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page-title')
-    <h1>{{$title}} <a href="{{route('backup.create')}}" class="btn btn-primary btn-rounded">Add New</a></h1>
+    <h1>{{$title}} @permission('create-backup')<a href="{{route('backup.create')}}" class="btn btn-primary btn-rounded">Add New</a>@endpermission</h1>
 @endsection
 @section('content')
     <table class="table table-hover">
@@ -42,12 +42,17 @@
                     @endphp
                 </td>
                 <td>
-                    <a href="{{route('backup.edit',$backup->id)}}"><i class="icon ion-edit text-warning mr-2"></i></a>
-                    <a href="#" data-toggle="delete" class="text-danger"><i class="icon ion-close-circled"></i></a>
-                    <form class="delete" action="{{route('apps.destroy',$backup->id)}}" method="POST" style="display: none;">
-                        <input type="hidden" name="_method" value="DELETE">
-                        {{ csrf_field() }}
-                    </form>
+                    @permission('update-backup')
+                        <a href="{{route('backup.edit',$backup->id)}}"><i class="icon ion-edit text-warning mr-2"></i></a>
+                    @endpermission
+
+                    @permission('delete-backup')
+                        <a href="#" data-toggle="delete" class="text-danger"><i class="icon ion-close-circled"></i></a>
+                        <form class="delete" action="{{route('apps.destroy',$backup->id)}}" method="POST" style="display: none;">
+                            <input type="hidden" name="_method" value="DELETE">
+                            {{ csrf_field() }}
+                        </form>
+                    @endpermission
                 </td>
             </tr>
         @endforeach

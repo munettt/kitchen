@@ -9,4 +9,11 @@ class BaseController extends Controller
     {
         $this->middleware('auth');
     }
+
+    public function hasPermission($permission)
+    {
+        if ( auth()->guest() || !request()->user()->can($permission) ){
+            abort(403, 'You do not have permission to perform this action');
+        }
+    }
 }

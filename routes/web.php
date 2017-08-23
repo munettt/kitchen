@@ -30,10 +30,11 @@ Route::get('/dashboard', 'Front\DashboardController@index')->name('dashboard');
 Route::get('/oauth/login/{provider}', 'Auth\SocialAuthController@login');
 Route::get('/oauth/callback/{provider}', 'Auth\SocialAuthController@callback');
 
-//apps
+//resource
 Route::resource('apps', 'Front\AppController');
 Route::resource('commands', 'Front\CommandController');
 Route::resource('backup', 'Front\BackupController');
+Route::resource('users', 'Front\UserController');
 
 //extra
 Route::get('backup/{id}/create-dir','Front\BackupController@createDir')->name('backup.create-dir');

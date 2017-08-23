@@ -5,14 +5,14 @@
 @endsection
 @section('content')
     <div class="row">
-        <div class="col-12 col-sm-3">
+        <div class="col-12 col-sm-4">
             <div class="card">
                 <div class="card-body">
                     <span class="status-indicator {{ config('kitchen.scheduler') ? 'active' : null }}"></span> Scheduler Active
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-3">
+        <div class="col-12 col-sm-4">
             <div class="card">
                 <div class="card-body stats-box">
                     <span class="mx-2">{{$totalApps}}</span>
@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-3">
+        <div class="col-12 col-sm-4">
             <div class="card">
                 <div class="card-body stats-box">
                     <span class="mx-2">{{$totalCommands}}</span>
