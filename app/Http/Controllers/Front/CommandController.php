@@ -118,6 +118,9 @@ class CommandController extends BaseController
         return redirect()->route('commands.index');
     }
 
+    /**
+     * Get recipe of a command
+     */
     public function recipe($id)
     {
         $command = Command::findOrFail($id);
@@ -125,6 +128,12 @@ class CommandController extends BaseController
         return response()->json(['data' => $command]);
     }
 
+    /**
+     * Execute task
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
     public function exec(Request $request)
     {
         $command = Command::findOrFail($request->get('id'));

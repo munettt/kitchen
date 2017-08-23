@@ -10,6 +10,7 @@
     <title>{{ isset($title) ? $title .' - ' : null }}{{ config('app.name', 'Laravel') }}</title>
 
     {!! Html::style(elixir('css/app.css')) !!}
+    {!! Html::style(elixir('css/vendor.css')) !!}
 </head>
 <body class="public">
 
