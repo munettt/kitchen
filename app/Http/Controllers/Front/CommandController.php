@@ -165,6 +165,7 @@ class CommandController extends BaseController
         if (empty($command->application->ssh_ip))
         {
             $process = new Process($task);
+            $process->setTimeout(3600);
             $process->run();
 
             $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
