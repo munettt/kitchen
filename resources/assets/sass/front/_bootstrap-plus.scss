@@ -31,3 +31,12 @@ input, select, textarea, button {
   animation-timing-function: ease-in;
   opacity: 1;
 }
+
+/* NAV */
+@include media-breakpoint-down(sm) {
+  .nav.x-scrollable {
+    white-space: nowrap;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+}

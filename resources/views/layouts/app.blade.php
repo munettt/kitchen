@@ -18,7 +18,7 @@
     <div class="row no-gutters">
         <div class="sidebar col-12 col-md-2 col-lg-1">
             <div class="site-brand"><a href="{{url("/")}}"><img src="{{asset('images/fork.png')}}" alt="logo"></a></div>
-            <ul class="nav nav-pills sidebar-nav">
+            <ul class="nav nav-pills sidebar-nav x-scrollable">
                 <li class="nav-item"><a class="nav-link {{$nav=='dashboard'?'active':''}}" href="{{url('/')}}"><em class="icon ion-speedometer"></em> Dashboard <span class="sr-only">(current)</span></a></li>
                 <li class="nav-item"><a class="nav-link  {{$nav=='apps'?'active':''}}" href="{{url('/apps')}}"><i class="icon ion-android-cloud-outline"></i> Applications</a></li>
                 <li class="nav-item"><a class="nav-link  {{$nav=='commands'?'active':''}}" href="{{url('/commands')}}"><em class="icon ion-clipboard"></em> Commands</a></li>
