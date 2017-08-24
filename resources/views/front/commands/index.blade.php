@@ -96,7 +96,7 @@ $(function () {
                         //execute
                         axios.post('/commands/exec', {
                             id: response.data.data.id
-                        },{timeout: 60000}).then(function (execResponse) {
+                        },{timeout: 300000}).then(function (execResponse) {
 
                             //disable button
                             button_loading(btn);
