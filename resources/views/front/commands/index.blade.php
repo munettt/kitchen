@@ -44,7 +44,6 @@
         </tbody>
     </table>
 
-
     {!! $commands->links() !!}
 
     <div class="modal fade" id="modalCommand" tabindex="-1" role="dialog" aria-labelledby="modalCommandLabel" aria-hidden="true">
@@ -64,11 +63,39 @@
             </div>
         </div>
     </div>
-
 @endsection
+
+@push('body')
+    <div id="command-sidebar" class="closed">
+
+        <div id="exec-body" class="cmd-text"></div>
+        <div>
+            <button class="btn btn-primary" onclick="toggleCommandSidebar()">Close</button>
+        </div>
+    </div>
+@endpush
 
 @push('scripts')
 <script type="text/javascript">
+function toggleCommandSidebar() {
+
+    var btn = $('.btn.btn-loading');
+    
+    $("#command-sidebar .exec-body").html('');
+
+    if ( $("#command-sidebar").hasClass('closed') ) {
+
+        button_loading(btn);
+        $('.btn-cmd').prop('disabled', true);
+
+        $("#command-sidebar").removeClass('closed');
+    } else {
+        button_loading(btn);
+        $('.btn-cmd').prop('disabled', false);
+
+        $("#command-sidebar").addClass('closed');
+    }
+}
 $(function () {
 
     $('.btn-cmd').click(function (e) {
@@ -81,11 +108,25 @@ $(function () {
 
         if (confirmed === true) {
 
-            button_loading(btn);
+            var cmd_id = $(this).data('id');
+            if ( cmd_id != '') {
 
-            if ($(this).data('id') != '') {
+                toggleCommandSidebar();
 
-                $("#modalCommand #command-box").html('');
+                axios.get('/commands/' + cmd_id + '/recipe')
+                    .then(function (response) {
+
+                        $("#exec-body").append(response.data.data.recipe.replace(/\n/g, "<br>"));
+                        $("#exec-body").append('<iframe src="/commands/'+cmd_id+'/exec"></iframe>');
+
+                    }).catch(function (error) {
+                        button_loading(btn);
+                        $('.btn-cmd').prop('disabled', false);
+                        console.log(error);
+                    });
+
+
+                /*$("#modalCommand #command-box").html('');
 
                 //perform axios
                 axios.get('/commands/' + $(this).data('id') + '/recipe')
@@ -116,7 +157,7 @@ $(function () {
                         button_loading(btn);
                         console.log(error);
                     });
-
+*/
             } else {
                 console.log('Data ID is empty.')
             }
@@ -128,6 +169,24 @@ $(function () {
 
 @push('styles')
     <style type="text/css">
+        iframe {
+            display:block;
+            width:100%;
+            min-height: 80vh;
+            border:0;
+            font-family:"SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            background:#444;
+            color:#fff;
+            font-size:0.8rem;
+        }
+
+        .cmd-text {
+            font-family:"SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            background:#444;
+            color:#fff;
+            font-size:0.8rem;
+        }
+
         #command-box {
 
             background:#444;
@@ -138,6 +197,29 @@ $(function () {
             overflow-x:auto;
             font-family:"SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
+        }
+
+        #command-sidebar {
+            background:#444;
+            color:#efefef;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1000;
+            width:50%;
+            transition:margin-right 300ms ease-in-out;
+            padding:25px;
+            box-shadow: -5px 0px 3px 0px rgba(0,0,0,.15);
+            overflow-y:auto;
+        }
+
+        #command-sidebar.closed {
+            margin-right: -50%;
+        }
+
+        body {
+            overflow-x: hidden;
         }
     </style>
 @endpush

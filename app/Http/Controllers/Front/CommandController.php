@@ -147,11 +147,13 @@ class CommandController extends BaseController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function exec(Request $request)
+    public function exec($id)
     {
         $this->hasPermission('read-commands');
 
-        $command = Command::findOrFail($request->get('id'));
+        $command = Command::findOrFail($id);
+
+        echo "<style type='text/css'>body { padding:0; font-family:'SFMono-Regular', Menlo, Monaco, Consolas, monospace; background:#444; color:#fff; font-size:0.8rem; } </style>";
 
         Log::create([
             'log_type'   => 'command',
@@ -168,7 +170,7 @@ class CommandController extends BaseController
             $process->setTimeout(3600);
             $process->run();
 
-            $responses = PHP_EOL . PHP_EOL .( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
+            echo nl2br( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
         }
         else
         {
@@ -181,9 +183,9 @@ class CommandController extends BaseController
             }
 
             $ssh->setTimeout(0);
-            $responses = $ssh->exec($task);
+            echo nl2br($ssh->exec($task));
         }
 
-        return response()->json(['data' => $responses]);
+        //return response()->json(['data' => $responses]);
     }
 }

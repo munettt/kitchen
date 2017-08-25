@@ -60,6 +60,7 @@
         </div>
     </div>
 </div>
+@stack('body')
 {!! Html::script(mix('js/app.js')) !!}
 {!! Html::script(mix('js/app.vendor.js')) !!}
 @stack('scripts')
