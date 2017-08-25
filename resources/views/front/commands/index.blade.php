@@ -80,8 +80,8 @@
 function toggleCommandSidebar() {
 
     var btn = $('.btn.btn-loading');
-    
-    $("#command-sidebar .exec-body").html('');
+
+    $("#exec-body").html('');
 
     if ( $("#command-sidebar").hasClass('closed') ) {
 
