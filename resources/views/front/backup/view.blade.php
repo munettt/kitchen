@@ -24,11 +24,11 @@
                 </td>
                 <td>
                     @permission('delete-backup')
-                    {{--<a href="#" data-toggle="delete" class="text-danger"><i class="icon ion-close-circled"></i></a>
-                    <form class="delete" action="{{route('backup.delete-file',[$backup->id, $file])}}" method="POST" style="display: none;">
+                    <a href="#" data-toggle="delete" class="text-danger"><i class="icon ion-close-circled"></i></a>
+                    <form class="delete" action="{{route('backup.delete-file',[$backup->id,$file->id])}}" method="POST" style="display: none;">
                         <input type="hidden" name="_method" value="DELETE">
                         {{ csrf_field() }}
-                    </form>--}}
+                    </form>
                     @endpermission
                 </td>
             </tr>

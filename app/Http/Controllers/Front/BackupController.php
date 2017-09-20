@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Models\App;
 use App\Models\Backup;
 use Illuminate\Http\Request;
+use App\Models\File as FileModel;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -136,17 +137,23 @@ class BackupController extends BaseController
         return redirect()->route('backup.index');
     }
 
-    public function destroyBackup($id,$file)
+    public function destroyBackup($id,$fileId)
     {
         $backup = Backup::findOrFail($id);
+        $file = FileModel::findOrFail($fileId);
 
-        if ( File::exists($backup->backup_path.'/'.$file) ) {
+        if ( $backup->location == 'local' && File::exists($backup->backup_path.'/'.$file->name) ) {
 
-            File::delete($backup->backup_path.'/'.$file);
-
-            flash('File deleted');
+            File::delete($backup->backup_path.'/'.$file->name);
+        }
+        else if ( $backup->location == 'cloud' && Storage::disk(config('filesystems.cloud'))->has($file->name) )
+        {
+            Storage::disk(config('filesystems.cloud'))->delete($file->name);
         }
 
+        $file->delete();
+
+        flash('File deleted');
 
         return redirect()->route('backup.show',$id);
     }
