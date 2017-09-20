@@ -10,28 +10,34 @@
         <thead>
         <tr>
             <th>File</th>
-            <th>Timestamp</th>
+            <th>Date</th>
             <th>Option</th>
         </tr>
         </thead>
         <tbody>
-        @foreach ( $files as $file )
+        @if ( count($backup->files) > 0 )
+        @foreach ( $backup->files as $file )
             <tr>
-                <td><a href="{{$backup->backup_url.'/'.$file}}" target="_blank">{{$file}}</a></td>
+                <td><a href="{{route('backup.download-file',$file->id)}}">{{$file->original_name}}</a></td>
                 <td>
-                    {{ \Carbon\Carbon::createFromTimestamp(filectime($backup->backup_path.'/'.$file))->diffForHumans() }}
+                    {{ $file->created_at->diffForHumans() }}
                 </td>
                 <td>
                     @permission('delete-backup')
-                    <a href="#" data-toggle="delete" class="text-danger"><i class="icon ion-close-circled"></i></a>
+                    {{--<a href="#" data-toggle="delete" class="text-danger"><i class="icon ion-close-circled"></i></a>
                     <form class="delete" action="{{route('backup.delete-file',[$backup->id, $file])}}" method="POST" style="display: none;">
                         <input type="hidden" name="_method" value="DELETE">
                         {{ csrf_field() }}
-                    </form>
+                    </form>--}}
                     @endpermission
                 </td>
             </tr>
         @endforeach
+        @else
+            <tr>
+                <td colspan="3" class="text-muted">Backup is empty.</td>
+            </tr>
+        @endif
         </tbody>
     </table>
 @endsection

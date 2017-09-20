@@ -12,7 +12,7 @@
         <div class="alert alert-warning">No more available applications to create backup for</div>
     @else
 
-    {!! Form::open(['route' => 'backup.store', 'class' => 'form-backup', 'role' => 'form', 'method' => 'post', 'files' => false]) !!}
+    {!! Form::open(['route' => 'backup.store', 'name' =>'form-backup', 'class' => 'form-backup validate', 'role' => 'form', 'method' => 'post', 'files' => false]) !!}
     @include('front.backup.partials.form')
     {!! Form::close() !!}
     @endif

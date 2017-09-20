@@ -28,9 +28,52 @@ function button_loading(btn, dark)
     }
 }
 
+function formValidate(elm)
+{
+    if (!$().parsley) {
+        return;
+    }
+
+    if ( $(elm).length === 0 ) return;
+
+    //validate
+    $(elm).parsley({
+
+        successClass: "is-valid",
+        errorClass: "is-invalid",
+        classHandler: function(el) {
+            return el.$element.closest(".form-group");
+        },
+        errorsContainer: function (el) {
+            return el.$element.closest(".form-group > div");
+        },
+        errorsWrapper: "<span class='invalid-feedback text-small'></span>",
+        errorTemplate: "<span></span>"
+
+    });
+
+
+    window.Parsley.on('field:error', function() {
+        this.$element.addClass('is-invalid');
+    });
+
+    window.Parsley.on('field:success', function() {
+        this.$element.addClass('is-valid');
+    });
+}
+
+/*
+    READY UP
+ */
 $(function () {
+
+    //form-validation
+    formValidate('form.validate');
+
+    //flash
     $('.content-wrapper .alert-flash').delay(1000).fadeOut(150);
 
+    //delete links
     $('[data-toggle="delete"]').click(function (e) {
         var ask = confirm('Are you sure?');
 
@@ -40,7 +83,16 @@ $(function () {
         e.preventDefault();
     });
 
-    $('.select').each(function(i, e){
+    //select
+    $('.select').selectpicker({
+        style: 'btn-outline-secondary',
+        size: 4,
+        showTick: true,
+        iconBase: 'icon',
+        tickIcon: 'ion-checkmark-round'
+    });
+
+    /*$('.select').each(function(i, e){
         if (!($(e).data('convert') == 'no')) {
             $(e).hide().removeClass('select');
             var current = $(e).find('option:selected').text() || 'Select';
@@ -60,5 +112,5 @@ $(function () {
             });
             $(e).remove();
         }
-    });
+    });*/
 });

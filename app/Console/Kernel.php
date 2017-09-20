@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\BackupCreate::class
+        \App\Console\Commands\BackupCreate::class,
+        \App\Console\Commands\BackupClean::class
     ];
 
     /**
@@ -29,13 +30,9 @@ class Kernel extends ConsoleKernel
             $backups = Backup::all();
 
             foreach ($backups as $backup) {
-                if ($backup->frequency == 'daily') {
-                    $schedule->command('backup:create ' . $backup->id)->dailyAt('16:00');
-                } elseif ($backup->frequency == '2x') {
-                    $schedule->command('backup:create ' . $backup->id)->twiceDaily(0, 12);
-                } elseif ($backup->frequency == '1x') {
-                    $schedule->command('backup:create ' . $backup->id)->hourly();
-                }
+
+                $schedule->command('backup:create ' . $backup->id)->dailyAt('16:00');
+
             }
         }
     }

@@ -13,6 +13,7 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.2.0",
         "phpseclib/phpseclib": "~2.0",
+        "runcloudio/flysystem-b2": "^1.1",
         "santigarcor/laratrust": "4.0.*"
     },
     "require-dev": {

@@ -1,1 +1,12 @@
 @import "node_modules/ionicons/scss/ionicons";
+
+//parsley
+.form-group.is-invalid {
+  .bootstrap-select+.invalid-feedback {
+    display:block !important;
+  }
+
+  .bootstrap-select .dropdown-toggle{
+    border-color:#dc3545;
+  }
+}

@@ -6,6 +6,7 @@ use App\Models\App;
 use App\Models\Backup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class BackupController extends BaseController
 {
@@ -16,7 +17,7 @@ class BackupController extends BaseController
         view()->share('title', 'Backup');
         view()->share('nav', 'backup');
 
-        $frequencies = ['daily'=>'Daily','2x'=>'Twice Daily','1x' => 'Hourly'];
+        $frequencies = config('kitchen.frequencies');
 
         view()->share('frequencies', $frequencies);
     }
@@ -30,7 +31,7 @@ class BackupController extends BaseController
     {
         $this->hasPermission('read-backup');
 
-        $backups = (new Backup)->paginate(30);
+        $backups = (new Backup)->with('latestFile')->paginate(30);
 
         return view('front.backup.index',compact('backups'));
     }
@@ -76,13 +77,13 @@ class BackupController extends BaseController
     {
         $this->hasPermission('read-backup');
 
-        $backup = Backup::findOrFail($id);
+        $backup = Backup::with('files')->findOrFail($id);
 
-        $files = array_where(scandir($backup->backup_path, SCANDIR_SORT_DESCENDING), function($value) use ($backup) {
+        /*$files = array_where(scandir($backup->backup_path, SCANDIR_SORT_DESCENDING), function($value) use ($backup) {
             return is_file($backup->backup_path.'/'.$value);
-        });
+        });*/
 
-        return view('front.backup.view', compact('backup','files'));
+        return view('front.backup.view', compact('backup'));
     }
 
     /**
@@ -170,5 +171,26 @@ class BackupController extends BaseController
         }
 
         return redirect()->route('backup.index');
+    }
+
+    public function downloadFile($fileId){
+
+        $file = \App\Models\File::findOrFail($fileId);
+        $backup = $file->upload->first();
+
+        //check
+        if ( $backup->location == 'local' ) {
+            return response()->download($backup->backup_path . '/' . $file->name);
+        } else {
+
+            return response()->stream(function() use ($file) {
+                $stream = Storage::disk(config('filesystems.cloud'))->readStream($file->name);
+                fpassthru($stream);
+            }, 200, [
+                'Content-Type' => 'application/gzip',
+                'Content-Disposition' => 'attachment; filename="' . $file->original_name . '"',
+                'Content-Length' => $file->size
+            ]);
+        }
     }
 }

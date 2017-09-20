@@ -3,9 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\App;
-use phpseclib\Net\SSH2;
+use App\Models\Backup;
+use App\Models\File;
+use Illuminate\Support\Facades\Storage;
 use App\Models\History;
-use phpseclib\Crypt\RSA;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
 
@@ -45,19 +46,28 @@ class BackupCreate extends Command
     {
         $appId = $this->argument('id');
 
-        $application = App::find($appId);
+        $application = App::findOrFail($appId);
+
+        if ( empty($application->backup) ) {
+            throw new \Exception('Application doesn\'t have any backup configured.');
+        }
 
         if ( $application && !empty($application->db_name) && !empty($application->db_username) ) {
 
             //$cmd ='mysqldump -u'.$application->db_username.' -p'.$application->db_password.' '.$application->db_name.' --routines  > '.$application->backup->backup_path.'\backup_'.date('d-m-Y').'.sql';
             //$process = new Process($cmd);
 
-            $date = date('d-m-Y-Hi');
-            $filename = $application->db_name.'_'.$date.'.sql.gz';
+            $date       = date('d-m-Y-Hi');
+            $filename   = $application->db_name.'_'.$date.'.sql.gz';
+            $folder     = $application->backup->location == 'cloud' ? storage_path('app/dbbackup') : $application->backup->backup_path;
 
-            if (empty($application->ssh_ip))
-            {
-                $cmd = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$application->backup->backup_path.'/'.$filename;
+            if ( $application->backup->location == 'cloud' && ! is_dir(storage_path('app/dbbackup'))) {
+                Storage::disk('local')->makeDirectory('dbbackup');
+            }
+
+            if (empty($application->ssh_ip)) {
+
+                $cmd = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$folder.'/'.$filename;
 
                 $this->info('Creating backup '.$filename);
 
@@ -66,7 +76,8 @@ class BackupCreate extends Command
 
                 $this->info(!empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
 
-                $this->info('All Done!');
+                $this->processNewBackup($application, $filename, $folder);
+
             }
             else
             {
@@ -82,10 +93,12 @@ class BackupCreate extends Command
 
                 //local process
                 $this->info('Copying back locally');
-                $process = new Process('scp '.$application->ssh_ip.':~/'.$filename.' '.$application->backup->backup_path.'/'.$filename);
+                $process = new Process('scp '.$application->ssh_ip.':~/'.$filename.' '.$folder.'/'.$filename);
                 $process->run();
 
                 $this->info(!empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
+
+                $this->processNewBackup($application, $filename, $folder);
 
                 //delete back
                 $process = new Process('ssh '.$application->ssh_ip." 'rm -f ".$filename."'");
@@ -93,17 +106,43 @@ class BackupCreate extends Command
                 $this->info(!empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
 
                 $this->info('All Done!');
-
             }
 
+            //log
             History::create([
                                 'log_type' => 'backup',
                                 'commands'  => $task ?? $cmd,
                                 'response' => 'New backup created: '.$filename
             ]);
 
+            //finish
+            $this->info('All Done!');
+
         } else {
             throw new \Exception('Invalid application (id:'.$appId.') or database connection');
         }
+    }
+
+    public function processNewBackup($application, $filename, $folder)
+    {
+        $size = filesize($folder.'/'.$filename);
+        $filenameHashed = $filename;
+
+        //move to cloud
+        if ( $application->backup->location == 'cloud' ) {
+
+            $filenameHashed = md5($filename).'.sql.gz';
+            Storage::disk(config('filesystems.cloud'))->put($filenameHashed, fopen($folder.'/'.$filename,'r'));
+            Storage::delete('dbbackup/'.$filename);
+        }
+
+        //create
+        $file = File::create([
+            'name'          => $filenameHashed,
+            'original_name' => $filename,
+            'size'          => $size
+        ]);
+
+        $application->backup->files()->save($file);
     }
 }

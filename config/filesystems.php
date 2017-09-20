@@ -63,6 +63,13 @@ return [
             'bucket' => env('AWS_BUCKET'),
         ],
 
+        'b2' => [
+            'driver'         => 'b2',
+            'bucketName'     => env('B2_BUCKET'),
+            'accountId'      => env('B2_ACCOUNT_ID'),
+            'applicationKey' => env('B2_APP_KEY')
+        ],
+
     ],
 
 ];

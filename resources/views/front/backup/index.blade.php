@@ -8,9 +8,8 @@
         <thead>
             <tr>
                 <th>Application</th>
-                <th>Path</th>
-                <th>Frequency</th>
-                <th>Last Backup</th>
+                {{--<th>Path</th>--}}
+                <th>Lastest Backup</th>
                 <th>Options</th>
             </tr>
         </thead>
@@ -18,28 +17,9 @@
         @foreach ( $backups as $backup )
             <tr>
                 <td><a href="{{route('backup.show',$backup->id)}}">{{$backup->application->domain}}</a></td>
-                <td class="text-muted">{{$backup->backup_path}}</td>
-                <td>{{$frequencies[$backup->frequency]}}</td>
+                {{--<td class="text-muted">{{$backup->backup_path}}</td>--}}
                 <td>
-                    @php
-                    if ( is_dir($backup->backup_path)) {
-
-                        $files = array_where(scandir($backup->backup_path, SCANDIR_SORT_DESCENDING), function($value) use ($backup) {
-                            return is_file($backup->backup_path.'/'.$value);
-                        });
-
-                        $newest_file = array_first($files);
-
-                        if ( !empty($newest_file) ) {
-                            echo \Carbon\Carbon::createFromTimestamp(filectime($backup->backup_path.'/'.$newest_file))->diffForHumans();
-                        } else {
-                            echo '<span class="text-muted">Never</span>';
-                        }
-
-                    } else {
-                        echo 'Invalid dir: backup_path <a class="badge badge-primary" href="'.route('backup.create-dir',$backup->id).'">Create?</a>';
-                    }
-                    @endphp
+                    {{ isset($backup->latestFile) ? $backup->latestFile->created_at->diffForHumans() : '-' }}
                 </td>
                 <td>
                     @permission('update-backup')

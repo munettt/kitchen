@@ -39,6 +39,7 @@ Route::resource('users', 'Front\UserController');
 //extra
 Route::get('backup/{id}/create-dir','Front\BackupController@createDir')->name('backup.create-dir');
 Route::delete('backup/{id}/delete/{file}','Front\BackupController@destroyBackup')->name('backup.delete-file');
+Route::get('backup/file/{file}/download','Front\BackupController@downloadFile')->name('backup.download-file');
 
 Route::get('commands/{command}/exec','Front\CommandController@exec')->name('commands.exec');
 Route::get('commands/{command}/recipe','Front\CommandController@recipe')->name('commands.recipe');
