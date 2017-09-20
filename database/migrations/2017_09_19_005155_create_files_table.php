@@ -21,7 +21,7 @@ class CreateFilesTable extends Migration
             $table->integer('size');
             $table->string('meta_1')->nullable();
             $table->string('meta_2')->nullable();
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->nullable();
         });
     }
 
