@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        Session::set('timezone',env('APP_TIMEZONE',config('app.timezone')));
+        session(['timezone' => env('APP_TIMEZONE',config('app.timezone'))]);
     }
 
     /**

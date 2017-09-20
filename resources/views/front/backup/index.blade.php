@@ -19,7 +19,7 @@
                 <td><a href="{{route('backup.show',$backup->id)}}">{{$backup->application->domain}}</a></td>
                 {{--<td class="text-muted">{{$backup->backup_path}}</td>--}}
                 <td>
-                    {{ isset($backup->latestFile) ? $backup->latestFile->created_at->timezone(Session::get('timezone'))->diffForHumans() : '-' }}
+                    {{ isset($backup->latestFile) ? $backup->latestFile->created_at->timezone(session('timezone'))->diffForHumans() : '-' }}
                 </td>
                 <td>
                     @permission('update-backup')

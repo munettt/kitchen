@@ -20,7 +20,7 @@
             <tr>
                 <td><a href="{{route('backup.download-file',$file->id)}}">{{$file->original_name}}</a></td>
                 <td>
-                    {{ $file->created_at->timezone(Session::get('timezone'))->diffForHumans() }}
+                    {{ $file->created_at->timezone(session('timezone'))->diffForHumans() }}
                 </td>
                 <td>
                     @permission('delete-backup')

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Backup extends Model
 {
     protected $fillable = [
-        'app_id', 'backup_path', 'backup_url', 'cleanup_all', 'cleanup_daily','cleanup_week','cleanup_month','cleanup_year'
+        'app_id', 'location', 'backup_path', 'backup_url', 'cleanup_all', 'cleanup_daily','cleanup_week','cleanup_month','cleanup_year'
     ];
 
     public function application()
