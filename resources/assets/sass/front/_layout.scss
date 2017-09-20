@@ -2,6 +2,11 @@
 body {
   background: #fff;
 }
+@include media-breakpoint-down(sm) {
+  .container-fluid {
+    padding:0;
+  }
+}
 
 .sidebar {
 

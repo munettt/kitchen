@@ -36,11 +36,12 @@
                 </div>
                 <div class="col-md-6 col-lg-4 text-md-right pt-3 pt-md-0">
                     <div class="dropdown dropdown-user">
-                        <div class="d-inline-block avatar">
-                            <img src="{{auth()->user()->social->avatar}}" alt="" class="rounded-circle">
-                        </div>
-                        <a href="#" class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {!! auth()->user()->email !!}
+
+                        <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="d-inline-block avatar">
+                                <img src="{{auth()->user()->social->avatar}}" alt="" class="rounded-circle">
+                            </div>
+                            <span class="d-none d-md-inline">{!! auth()->user()->email !!}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-item"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></div>

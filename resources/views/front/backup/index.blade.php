@@ -4,7 +4,7 @@
     <h1>{{$title}} @permission('create-backup')<a href="{{route('backup.create')}}" class="btn btn-primary btn-rounded">Add New</a>@endpermission</h1>
 @endsection
 @section('content')
-    <table class="table table-hover">
+    <table class="table table-hover table-responsive">
         <thead>
             <tr>
                 <th>Application</th>
