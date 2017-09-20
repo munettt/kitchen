@@ -31,11 +31,11 @@
         </div>
         <div class="col-12 col-lg-11 col-md-10 ml-auto">
             <header class="row justify-center">
-                <div class="col-9 col-md-6 col-lg-8">
+                <div class="col-md-6 col-lg-8">
                     {{--<h6 class="badge badge-warning">{{config('app.name')}}</h6>--}}
                     @yield('page-title')
                 </div>
-                <div class="col-3 col-md-6 col-lg-4 text-left text-md-right d-none d-md-block">
+                <div class="col-md-6 col-lg-4 text-left text-md-right d-none d-md-block">
                     <div class="dropdown dropdown-user">
 
                         <a href="#" class="btn btn-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
