@@ -17,9 +17,6 @@ class BackupController extends BaseController
         view()->share('title', 'Backup');
         view()->share('nav', 'backup');
 
-        $frequencies = config('kitchen.frequencies');
-
-        view()->share('frequencies', $frequencies);
     }
 
     /**

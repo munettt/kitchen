@@ -4,13 +4,8 @@ return [
     'scheduler'       => env('APP_SCHEDULER', false),
     'allowed-domains' => env('APP_ALLOWED_DOMAIN', null),
     'auth'            => [
-        'oauth' => ['google']
-    ],
-    'frequencies'     => [
-        'Ymd' => 'Daily',
-        'YW'  => 'Weekly',
-        'Ym'  => 'Monthly',
-        'Y'   => 'Yearly'
+        'oauth' => ['google'],
+        'remember-me'   => true
     ],
     'backup' => [
 
