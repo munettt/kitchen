@@ -42,7 +42,7 @@
                     @foreach ( $backups as $backup )
                     <div class="row">
                         <div class="col-auto mr-auto"><a href="{{route('backup.show',$backup->id)}}">{{$backup->application->domain}}</a></div>
-                        <div class="col-auto text-right text-muted">{{$latest[$backup->id] ?? 'Never'}}</div>
+                        <div class="col-auto text-right text-muted">{{isset($backup->latestFile) ? $backup->latestFile->created_at->diffForHumans() : 'Never'}}</div>
                     </div>
                     @endforeach
                 </div>
