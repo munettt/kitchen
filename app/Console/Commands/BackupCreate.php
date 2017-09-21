@@ -67,7 +67,7 @@ class BackupCreate extends Command
 
             if (empty($application->ssh_ip)) {
 
-                $cmd = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$folder.'/'.$filename;
+                $cmd = 'mysqldump -h'.$application->db_host.' -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$folder.'/'.$filename;
 
                 $this->info('Creating backup '.$filename);
 
@@ -84,7 +84,7 @@ class BackupCreate extends Command
                 //backup
                 $this->info('Creating backup '.$filename.' on '.$application->ssh_ip);
 
-                $task = 'mysqldump -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$filename;
+                $task = 'mysqldump -h'.$application->db_host.' -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$filename;
 
                 $process = new Process('ssh '.$application->ssh_ip." '".$task."'");
                 $process->run();
