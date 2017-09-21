@@ -8,6 +8,7 @@ use App\Models\Command;
 use Illuminate\Http\Request;
 use phpseclib\Crypt\RSA;
 use phpseclib\Net\SSH2;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 class CommandController extends BaseController
@@ -170,7 +171,18 @@ class CommandController extends BaseController
             $process->setTimeout(3600);
             $process->run();
 
-            echo nl2br( !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
+            // executes after the command finishes
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
+
+
+            if ( !empty($process->getErrorOutput())) {
+                echo 'ERROR:';
+                echo nl2br($process->getErrorOutput());
+            }
+
+            echo nl2br( $process->getOutput() );
         }
         else
         {
