@@ -172,9 +172,9 @@ class CommandController extends BaseController
             $process->run();
 
             // executes after the command finishes
-            if (!$process->isSuccessful()) {
+            /*if (!$process->isSuccessful()) {
                 throw new ProcessFailedException($process);
-            }
+            }*/
 
 
             if ( !empty($process->getErrorOutput())) {
