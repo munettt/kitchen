@@ -36,7 +36,7 @@ class SocialAuthController extends Controller
 
         $user = $service->createOrGetUser(Socialite::driver($provider)->user(),$provider);
 
-        auth()->login($user, config('kithen.auth.remember-me'));
+        auth()->login($user, config('kitchen.auth.remember-me'));
 
         return redirect()->to('/dashboard');
     }
