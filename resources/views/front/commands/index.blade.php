@@ -98,6 +98,18 @@ function toggleCommandSidebar() {
 }
 $(function () {
 
+    function escapeHtml(text) {
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
     $('.btn-cmd').click(function (e) {
 
         var btn = $(this);
@@ -116,7 +128,7 @@ $(function () {
                 axios.get('/commands/' + cmd_id + '/recipe')
                     .then(function (response) {
 
-                        $("#exec-body").append(response.data.data.recipe.replace(/\n/g, "<br>"));
+                        $("#exec-body").append(escapeHtml(response.data.data.recipe).replace(/\n/g, "<br>"));
                         $("#exec-body").append('<iframe src="/commands/'+cmd_id+'/exec"></iframe>');
 
                     }).catch(function (error) {
