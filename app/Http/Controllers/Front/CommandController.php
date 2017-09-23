@@ -164,6 +164,7 @@ class CommandController extends BaseController
 
         $commands = explode(PHP_EOL,$command->recipe);
         $task = implode(' && ', array_map('trim', $commands));
+        $task = preg_replace(['~(?<!\s)\h*\R\h*+(?!\s)~', '~\h*(\R)\h*+\s+~'], [' ', '$1'], $task);
 
         if (empty($command->application->ssh_ip))
         {
