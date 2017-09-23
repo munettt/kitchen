@@ -57,7 +57,7 @@
                     @foreach ( $logs as $log )
                         <div class="row">
                             <div class="col-auto mr-auto">
-                                {{  $log->command->application->domain }}- {!! $log->command->title ?? '<em>deleted</em>' !!}<br>
+                                {{  $log->command->application->domain ?? '<em>deleted</em>' }}- {!! $log->command->title ?? '<em>deleted</em>' !!}<br>
                                 <span class="text-small text-muted">{{$log->user->name}}</span>
                             </div>
                             <div class="col-auto text-right text-muted">{{$log->created_at->timezone(session('timezone'))->diffForHumans()}}</div>
