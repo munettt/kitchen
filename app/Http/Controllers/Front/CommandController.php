@@ -172,9 +172,9 @@ class CommandController extends BaseController
             $process->setTimeout(3600);
             //$process->run();
 
-            function ($type, $buffer) {
+            $process->run(function ($type, $buffer) {
                nl2br( $buffer );
-            }
+            });
 
             // executes after the command finishes
             /*if (!$process->isSuccessful()) {
