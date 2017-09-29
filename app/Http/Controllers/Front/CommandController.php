@@ -170,7 +170,11 @@ class CommandController extends BaseController
         {
             $process = new Process($task);
             $process->setTimeout(3600);
-            $process->run();
+            //$process->run();
+
+            function ($type, $buffer) {
+               nl2br( $buffer );
+            }
 
             // executes after the command finishes
             /*if (!$process->isSuccessful()) {
@@ -183,7 +187,7 @@ class CommandController extends BaseController
                 echo nl2br($process->getErrorOutput());
             }
 
-            echo nl2br( $process->getOutput() );
+            //echo nl2br( $process->getOutput() );
         }
         else
         {
