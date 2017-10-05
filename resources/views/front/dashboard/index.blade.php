@@ -42,7 +42,7 @@
                     @foreach ( $backups as $backup )
                     <div class="row">
                         <div class="col-auto mr-auto"><a href="{{route('backup.show',$backup->id)}}">{{$backup->application->domain}}</a></div>
-                        <div class="col-auto text-right text-muted">{{isset($backup->latestFile) ? $backup->latestFile->created_at->timezone(session('timezone'))->diffForHumans() : 'Never'}}</div>
+                        <div class="col-auto text-md-right text-muted">{{isset($backup->latestFile) ? $backup->latestFile->created_at->timezone(session('timezone'))->diffForHumans() : 'Never'}}</div>
                     </div>
                     @endforeach
                 </div>
@@ -60,7 +60,7 @@
                                 {!! $log->command->application->domain ?? '<em>deleted</em>'  !!} - {!! $log->command->title ?? '<em>deleted</em>' !!}<br>
                                 <span class="text-small text-muted">{{$log->user->name}}</span>
                             </div>
-                            <div class="col-auto text-right text-muted">{{$log->created_at->timezone(session('timezone'))->diffForHumans()}}</div>
+                            <div class="col-auto text-md-right text-muted">{{$log->created_at->timezone(session('timezone'))->diffForHumans()}}</div>
                         </div>
                     @endforeach
                 </div>

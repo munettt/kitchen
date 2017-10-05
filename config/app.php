@@ -177,16 +177,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        /*
-         * 3rd Party
-         */
-        Laravel\Socialite\SocialiteServiceProvider::class,
-        Laracasts\Flash\FlashServiceProvider::class,
-        Laratrust\LaratrustServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class,
-        RunCloudIO\FlysystemB2\BackblazeServiceProvider::class,
-
-
     ],
 
     /*
@@ -235,12 +225,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
-        /* 3rd Party */
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        'Laratrust'   => Laratrust\LaratrustFacade::class,
-        'Form' => Collective\Html\FormFacade::class,
-        'Html' => Collective\Html\HtmlFacade::class,
 
     ],
 
