@@ -2,13 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Models\App;
+use Carbon\Carbon;
 use App\Models\Backup;
-use App\Models\File;
-use Illuminate\Support\Facades\Storage;
-use App\Models\History;
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Process;
+use App\Models\File as FileModel;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class BackupClean extends Command
 {
@@ -17,7 +16,7 @@ class BackupClean extends Command
      *
      * @var string
      */
-    protected $signature = 'backup:clean {id}';
+    protected $signature = 'kitchen:backup-clean {id}';
 
     /**
      * The console command description.
@@ -48,8 +47,23 @@ class BackupClean extends Command
 
         $backup = Backup::findOrFail($id);
 
-        dd($backup->latestFile());
+        $keep =  Carbon::now()->subDays($backup->keep)->toDateTimeString();
 
+        $files = $backup->files()->where('files.created_at', '>', $keep)->get();
+        $files->each(function($file) use ($backup)
+        {
+            if ( $backup->location == 'local' && File::exists($backup->backup_path.'/'.$file->name) ) {
 
+                File::delete($backup->backup_path.'/'.$file->name);
+            }
+            else if ( $backup->location == 'cloud' && Storage::disk(config('filesystems.cloud'))->has($file->name) )
+            {
+                Storage::disk(config('filesystems.cloud'))->delete($file->name);
+            }
+
+            $file->delete();
+
+            $this->line('Deleted: '.$file->name);
+        });
     }
 }

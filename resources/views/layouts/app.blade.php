@@ -17,7 +17,7 @@
 <div class="container-fluid">
     <div class="row no-gutters">
         <div class="sidebar col-12 col-md-2 col-lg-1">
-            <div class="site-brand"><a href="{{url("/")}}"><img src="{{asset('images/fork.png')}}" alt="logo"></a></div>
+            <div class="site-brand"><a href="{{url("/")}}"><img src="{{asset('images/logo.png')}}" alt="logo"></a></div>
             <ul class="nav nav-pills sidebar-nav x-scrollable">
                 <li class="nav-item"><a class="nav-link {{$nav=='dashboard'?'active':''}}" href="{{url('/')}}"><i class="icon ion-speedometer"></i> Dashboard <span class="sr-only">(current)</span></a></li>
                 <li class="nav-item"><a class="nav-link  {{$nav=='apps'?'active':''}}" href="{{url('/apps')}}"><i class="icon ion-android-cloud-outline"></i> Applications</a></li>
@@ -40,13 +40,13 @@
 
                         <a href="#" class="btn btn-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="d-inline-block avatar">
-                                <img src="{{auth()->user()->social->avatar}}" alt="" class="rounded-circle">
+                                <img src="{{auth()->user()->social ?? asset('images/user.png') }}" alt="" class="rounded-circle">
                                 <span class="d-none d-md-inline ml-2">{!! auth()->user()->email !!}</span>
                             </div>
 
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <div class="dropdown-item"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></div>
+                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                         </div>
                     </div>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

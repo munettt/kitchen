@@ -19,6 +19,12 @@ input, select, textarea, button {
   font-size: 75%;
 }
 
+.text-label {
+  font-size: 11px;
+  color: $gray-700;
+  text-transform: uppercase
+}
+
 /* MODAL */
 .modal.fade .modal-dialog {
   transform: perspective(400px) scale3d(0.95, .95, .95);

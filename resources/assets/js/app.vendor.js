@@ -2,7 +2,7 @@
  * Toggle loading state for button
  * Example: <button class="btn btn-primary">Button</button>
  */
-function button_loading(btn, dark)
+function buttonLoading(btn, dark)
 {
     dark = typeof dark !== 'undefined' ? dark : true;
 
@@ -28,6 +28,18 @@ function button_loading(btn, dark)
     }
 }
 
+function escapeHtml(text) {
+    var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
 function formValidate(elm)
 {
     if (!$().parsley) {
@@ -47,7 +59,7 @@ function formValidate(elm)
         errorsContainer: function (el) {
             return el.$element.closest(".form-group > div");
         },
-        errorsWrapper: "<span class='invalid-feedback text-small'></span>",
+        errorsWrapper: "<span class='invalid-feedback'></span>",
         errorTemplate: "<span></span>"
 
     });
@@ -92,25 +104,4 @@ $(function () {
         tickIcon: 'ion-checkmark-round'
     });
 
-    /*$('.select').each(function(i, e){
-        if (!($(e).data('convert') == 'no')) {
-            $(e).hide().removeClass('select');
-            var current = $(e).find('option:selected').text() || 'Select';
-            var val   =   $(e).find('option:selected').attr('value');
-            var name  =   $(e).attr('name') || '';
-
-            $(e).parent().append('<div class="btn-group" id="select-group-' + i + '" />');
-            var select = $('#select-group-' + i);
-            select.html('<a class="btn btn-outline-secondary dropdown-toggle' + $(e).attr('class') + '" data-toggle="dropdown">' + current + '</a></a><div class="dropdown-menu"></div><input type="hidden" value="' + val + '" name="' + name + '" id="' + $(e).attr('id') + '" class="' + $(e).attr('class') + '" />');
-            $(e).find('option').each(function(o,q) {
-                select.find('.dropdown-menu').append('<a class="dropdown-item" href="#" data-value="' + $(q).attr('value') + '">' + $(q).html() + '</a>');
-            });
-            select.find('.dropdown-menu a').click(function(e) {
-                select.find('input[type=hidden]').val($(this).data('value')).change();
-                select.find('.btn:eq(0)').html($(this).html());
-                e.preventDefault();
-            });
-            $(e).remove();
-        }
-    });*/
 });

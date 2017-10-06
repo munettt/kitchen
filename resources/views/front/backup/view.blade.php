@@ -11,6 +11,7 @@
         <tr>
             <th>File</th>
             <th>Date</th>
+            <th>Size</th>
             <th>Option</th>
         </tr>
         </thead>
@@ -21,6 +22,9 @@
                 <td><a href="{{route('backup.download-file',$file->id)}}">{{$file->original_name}}</a></td>
                 <td>
                     {{ $file->created_at->timezone(session('timezone'))->diffForHumans() }}
+                </td>
+                <td>
+                    {{ formatBytes($file->size) }}
                 </td>
                 <td>
                     @permission('delete-backup')
@@ -35,7 +39,7 @@
         @endforeach
         @else
             <tr>
-                <td colspan="3" class="text-muted">Backup is empty.</td>
+                <td colspan="4" class="text-muted">Backup is empty.</td>
             </tr>
         @endif
         </tbody>

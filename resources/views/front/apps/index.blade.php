@@ -7,14 +7,17 @@
     <table class="table table-hover table-responsive">
         <thead>
             <tr>
+                <th width="5%">ID</th>
                 <th>Domain</th>
                 <th>Path</th>
                 <th>Options</th>
             </tr>
         </thead>
         <tbody>
+        @if ( count($apps) > 0 )
         @foreach ( $apps as $app )
             <tr>
+                <td>{{$app->id}}</td>
                 <td>{{$app->domain}}</td>
                 <td>{{$app->path}}</td>
                 <td>
@@ -32,6 +35,11 @@
                 </td>
             </tr>
         @endforeach
+        @else
+            <tr>
+                <td colspan="4" class="text-muted">No applications yet.</td>
+            </tr>
+        @endif
         </tbody>
     </table>
 @endsection

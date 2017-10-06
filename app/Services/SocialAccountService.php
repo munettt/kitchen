@@ -21,9 +21,9 @@ class SocialAccountService
         }
         else
         {
-            //check email
-            $allowedDomains = config('kitchen.allowed-domains');
+            $allowedDomains = config('kitchen.auth.social.allowed-domains');
 
+            //check if email belongs in allowed domains
             if ( !empty($allowedDomains) )
             {
                 $allowedDomains = array_map('trim',explode(',',$allowedDomains));
@@ -33,7 +33,6 @@ class SocialAccountService
                     throw new \Exception('Only these domain(s) are allowed to sign in: '.config('kitchen.allowed-domains'));
                 }
             }
-
 
 
             //account
@@ -56,14 +55,16 @@ class SocialAccountService
                 $user->roles()->sync([2]);
 
                 //email admins
-                $admins = User::whereRoleIs('admin')->get();
-                $content = [
-                    'title' => 'New user registered',
-                    'body'  => 'New user registered: ' . $providerUser->getEmail()
-                ];
+                if (config('kitchen.users.notify-admin')) {
+                    $admins = User::whereRoleIs('admin')->get();
+                    $content = [
+                        'title' => 'New user registered',
+                        'body'  => 'New user registered: ' . $providerUser->getEmail()
+                    ];
 
-                foreach ($admins as $admin) {
-                    Mail::to($admin->email)->send(new NewUser($content));
+                    foreach ($admins as $admin) {
+                        Mail::to($admin->email)->send(new NewUser($content));
+                    }
                 }
             }
 

@@ -4,14 +4,14 @@
             <label for="domain" class="col-sm-2 col-form-label text-md-right">Domain</label>
             <div class="col-sm-10">
                 {!! Form::text('domain',null,['id'=>'domain','class'=>'form-control','required']) !!}
-                <small class="form-text text-muted">Domain name example: comet-sms.mtcsb.my</small>
+                <small class="form-text text-muted">Domain name example: app.domain.com</small>
             </div>
         </div>
         <div class="form-group row">
             <label for="domain" class="col-sm-2 col-form-label text-md-right">Path</label>
             <div class="col-sm-10">
                 {!! Form::text('path',null,['id'=>'path','class'=>'form-control','required']) !!}
-                <small class="form-text text-muted">Full path: /var/www/html/application-folder</small>
+                <small class="form-text text-muted">Full path: /var/www/html/app</small>
             </div>
         </div>
         <h5 class="my-5 text-muted">SSH Info (optional)</h5>

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Services\SocialAccountService;
 use Laravel\Socialite\Facades\Socialite;
+use App\Services\SocialAccountService;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class SocialAuthController extends Controller
@@ -24,28 +24,39 @@ class SocialAuthController extends Controller
     /**
      * Return a callback method from provider.
      *
+     * @param $provider
+     * @param $service
+     * @param $request
      * @return callback URL from twitter
      */
     public function callback(string $provider, SocialAccountService $service, Request $request)
     {
         $this->checkProvider($provider);
 
+        // what ?
         if (! $request->all()) {
-            return redirect()->to('/dashboard');
+            return redirect()->route('dashboard');
         }
 
         $user = $service->createOrGetUser(Socialite::driver($provider)->user(),$provider);
 
-        auth()->login($user, config('kitchen.auth.remember-me'));
+        auth()->login($user, config('kitchen.auth.social.remember-me'));
 
-        return redirect()->to('/dashboard');
+        return redirect()->route('dashboard');
     }
 
     protected function checkProvider($provider)
     {
-        if (! in_array($provider, config('kitchen.auth.oauth')) ) {
-            flash('OAuth provider not a valid type')->error();
+        if (! in_array($provider, $this->getProviders()) ) {
+
+            flash('Not a valid social OAuth provider.')->error();
+
             return redirect()->route('dashboard');
         }
+    }
+
+    protected function getProviders()
+    {
+        return array_keys(config('kitchen.auth.social.services'));
     }
 }

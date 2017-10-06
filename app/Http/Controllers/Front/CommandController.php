@@ -154,7 +154,7 @@ class CommandController extends BaseController
 
         $command = Command::findOrFail($id);
 
-        echo "<style type='text/css'>body { padding:0; font-family:'SFMono-Regular', Menlo, Monaco, Consolas, monospace; background:#444; color:#fff; font-size:0.8rem; } </style>";
+        echo "<style type='text/css'>body { margin:0; padding:0; font-family:'SFMono-Regular', Menlo, Monaco, Consolas, monospace; background:#444; color:#fff; font-size:0.8rem; } </style>";
 
         Log::create([
             'log_type'   => 'command',
@@ -173,8 +173,14 @@ class CommandController extends BaseController
             //$process->run();
 
             $process->run(function ($type, $buffer) {
-               nl2br( $buffer );
+                if (Process::ERR === $type) {
+                    echo 'ERR > '.$buffer;
+                } else {
+                    echo nl2br($buffer);
+                }
             });
+
+            /*echo 'OUT >' . $process->getOutput();
 
             // executes after the command finishes
             /*if (!$process->isSuccessful()) {
@@ -182,12 +188,12 @@ class CommandController extends BaseController
             }*/
 
 
-            if ( !empty($process->getErrorOutput())) {
+            /*if ( !empty($process->getErrorOutput())) {
                 echo 'ERROR:';
                 echo nl2br($process->getErrorOutput());
             }
 
-            //echo nl2br( $process->getOutput() );
+            echo nl2br( $process->getOutput() );*/
         }
         else
         {

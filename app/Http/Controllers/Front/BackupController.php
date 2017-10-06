@@ -77,10 +77,6 @@ class BackupController extends BaseController
 
         $backup = Backup::with('files')->findOrFail($id);
 
-        /*$files = array_where(scandir($backup->backup_path, SCANDIR_SORT_DESCENDING), function($value) use ($backup) {
-            return is_file($backup->backup_path.'/'.$value);
-        });*/
-
         return view('front.backup.view', compact('backup'));
     }
 
@@ -179,7 +175,7 @@ class BackupController extends BaseController
 
     public function downloadFile($fileId){
 
-        $file = \App\Models\File::findOrFail($fileId);
+        $file = FileModel::findOrFail($fileId);
         $backup = $file->upload->first();
 
         //check

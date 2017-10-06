@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use App\Models\App;
-use App\Models\Backup;
 use App\Models\File;
-use Illuminate\Support\Facades\Storage;
 use App\Models\History;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Storage;
 
 class BackupCreate extends Command
 {
@@ -17,14 +17,14 @@ class BackupCreate extends Command
      *
      * @var string
      */
-    protected $signature = 'backup:create {id}';
+    protected $signature = 'kitchen:backup {id}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'create backup';
+    protected $description = 'Create backup';
 
     /**
      * Create a new command instance.
@@ -49,25 +49,26 @@ class BackupCreate extends Command
         $application = App::findOrFail($appId);
 
         if ( empty($application->backup) ) {
-            throw new \Exception('Application doesn\'t have any backup configured.');
+            throw new Exception('Application doesn\'t have any backup configured.');
         }
 
-        if ( $application && !empty($application->db_name) && !empty($application->db_username) ) {
-
-            //$cmd ='mysqldump -u'.$application->db_username.' -p'.$application->db_password.' '.$application->db_name.' --routines  > '.$application->backup->backup_path.'\backup_'.date('d-m-Y').'.sql';
-            //$process = new Process($cmd);
-
+        if ( $application && !empty($application->db_name) && !empty($application->db_username) )
+        {
             $date       = date('d-m-Y-Hi');
             $filename   = $application->db_name.'_'.$date.'.sql.gz';
             $folder     = $application->backup->location == 'cloud' ? storage_path('app/dbbackup') : $application->backup->backup_path;
 
-            if ( $application->backup->location == 'cloud' && ! is_dir(storage_path('app/dbbackup'))) {
+            if ( ! is_dir(storage_path('app/dbbackup'))) {
                 Storage::disk('local')->makeDirectory('dbbackup');
+            }
+
+            if ( ! is_dir($folder)) {
+                mkdir($folder,0755);
             }
 
             if (empty($application->ssh_ip)) {
 
-                $cmd = 'mysqldump -h'.$application->db_host.' -u'.$application->db_username.' -p'.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$folder.'/'.$filename;
+                $cmd = 'mysqldump -h'.$application->db_host.' -u'.$application->db_username.' --password='.$application->db_password.' --routines '.$application->db_name.' | gzip -c | cat > '.$folder.'/'.$filename;
 
                 $this->info('Creating backup '.$filename);
 
@@ -103,6 +104,7 @@ class BackupCreate extends Command
                 //delete back
                 $process = new Process('ssh '.$application->ssh_ip." 'rm -f ".$filename."'");
                 $process->run();
+
                 $this->info(!empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput());
 
                 $this->info('All Done!');
@@ -119,7 +121,7 @@ class BackupCreate extends Command
             $this->info('All Done!');
 
         } else {
-            throw new \Exception('Invalid application (id:'.$appId.') or database connection');
+            throw new Exception('Invalid application (id:'.$appId.') or database connection');
         }
     }
 

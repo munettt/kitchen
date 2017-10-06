@@ -1,22 +1,22 @@
 <?php
 
 return [
-    'scheduler'       => env('APP_SCHEDULER', false),
-    'allowed-domains' => env('APP_ALLOWED_DOMAIN', null),
-    'auth'            => [
-        'oauth' => ['google'],
-        'remember-me'   => true
-    ],
-    'backup' => [
-
-        'clean' => [
-
-            'all'   => 7,
-            'daily' => 14,
-            'week'  => 8,
-            'month' => 4,
-            'year'  => 2
-
+    'auth' => [
+        'social'       => [
+            'services'        => [
+                'google'  => 'icon ion-social-google'
+            ],
+            'remember-me'     => true,
+            'allowed-domains' => env('APP_ALLOWED_DOMAIN', null),
         ]
+    ],
+    'users' => [
+        'registration' => false,
+        'notify-admin'  => false,
+
+    ],
+    'scheduler' => env('APP_SCHEDULER',false),
+    'backup' => [
+        'keep' => 7
     ]
 ];

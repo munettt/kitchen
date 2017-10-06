@@ -134,6 +134,14 @@ header {
 body.public {
   background: #563a79;
 
+  header.site-header {
+    margin: 1rem 0;
+
+    .logo {
+      height: 100px
+    }
+  }
+
   > nav {
     padding: 1rem 0;
   }

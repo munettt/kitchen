@@ -8,16 +8,15 @@
         <thead>
             <tr>
                 <th>Application</th>
-                {{--<th>Path</th>--}}
-                <th>Lastest Backup</th>
+                <th>Last Backup</th>
                 <th>Options</th>
             </tr>
         </thead>
         <tbody>
+        @if ( count($backups) > 0 )
         @foreach ( $backups as $backup )
             <tr>
                 <td><a href="{{route('backup.show',$backup->id)}}">{{$backup->application->domain}}</a></td>
-                {{--<td class="text-muted">{{$backup->backup_path}}</td>--}}
                 <td>
                     {{ isset($backup->latestFile) ? $backup->latestFile->created_at->timezone(session('timezone'))->diffForHumans() : '-' }}
                 </td>
@@ -36,6 +35,11 @@
                 </td>
             </tr>
         @endforeach
+        @else
+            <tr>
+                <td colspan="3" class="text-muted">No backups configured yet.</td>
+            </tr>
+        @endif
         </tbody>
     </table>
 @endsection

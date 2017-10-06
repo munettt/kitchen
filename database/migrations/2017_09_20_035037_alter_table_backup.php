@@ -15,14 +15,10 @@ class AlterTableBackup extends Migration
     {
         Schema::table('backups', function (Blueprint $table) {
             $table->dropColumn('frequency');
+            $table->dropColumn('backup_url');
             $table->string('location',32)->default('local');
-            $table->string('backup_url')->nullable()->change();
             $table->string('backup_path')->nullable()->change();
-            $table->smallInteger('cleanup_all')->unsigned();
-            $table->smallInteger('cleanup_daily')->unsigned();
-            $table->smallInteger('cleanup_week')->unsigned();
-            $table->smallInteger('cleanup_month')->unsigned();
-            $table->smallInteger('cleanup_year')->unsigned();
+            $table->smallInteger('keep')->unsigned();
         });
     }
 

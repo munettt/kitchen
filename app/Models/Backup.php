@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Backup extends Model
 {
     protected $fillable = [
-        'app_id', 'location', 'backup_path', 'backup_url', 'cleanup_all', 'cleanup_daily','cleanup_week','cleanup_month','cleanup_year'
+
+        'keep',
+        'app_id',
+        'location',
+        'backup_url',
+        'backup_path',
     ];
 
     public function application()
@@ -23,6 +28,9 @@ class Backup extends Model
         return $this->morphMany(File::class, 'upload')->orderBy('created_at', 'desc');
     }
 
+    /**
+     * Latest File
+     */
     public function latestFile()
     {
         return $this->morphOne(File::class,'upload')->latest();
