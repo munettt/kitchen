@@ -10,9 +10,14 @@ Clone the application
 git clone https://github.com/munettt/kitchen.git
 ```
 
-Create database, .env file and generate application key
+Create database, create .env file and generate application key
 
-Run install
+Run composer install
+``` bash
+composer install
+```
+
+Install Kitchen
 ``` bash
 php artisan kitchen:install
 ```
