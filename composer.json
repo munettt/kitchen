@@ -13,7 +13,7 @@
         "laracasts/flash": "^3.0",
         "laravel/socialite": "^3.0",
         "laravelcollective/html": "^5.2.0",
-        "phpseclib/phpseclib": "~2.0",
+        "phpseclib/phpseclib": "~3.0",
         "runcloudio/flysystem-b2": "^1.1",
         "santigarcor/laratrust": "4.0.*"
     },
